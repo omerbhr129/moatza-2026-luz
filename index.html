@@ -94,8 +94,23 @@ details.past{margin:4px 0 10px} details.past summary{cursor:pointer;color:var(--
 .other.done.omer{background:var(--omer-soft);color:var(--omer)} .other.done.shaham{background:var(--shaham-soft);color:var(--shaham)}
 .notes{margin-top:6px}
 textarea.note.priv{border-style:dashed;margin-top:6px;background:var(--light-soft)}
-.flagtbl td:first-child{white-space:nowrap;font-weight:700}
-.flagtbl td{font-size:.9rem}
+.privbox{margin-top:6px}
+.privview{border:1px dashed var(--line);border-radius:10px;padding:9px 12px;background:var(--light-soft);cursor:pointer;font-size:.95rem}
+.privview:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.privview .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;font-size:.88rem}
+.privview .ph span{font-weight:600;color:var(--soft);font-size:.8rem}
+.privview .pt{white-space:pre-wrap;line-height:1.7;margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.privview.open .pt{display:block}
+.privview .pe{margin-top:8px;font:inherit;font-size:.82rem;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:3px 10px;cursor:pointer;display:none}
+.privview.open .pe{display:inline-block}
+.privempty{color:var(--soft);font-size:.88rem}
+.std{border:1px solid var(--line);border-radius:12px;margin:6px 0;background:var(--card);box-shadow:var(--shadow)}
+.std summary{cursor:pointer;padding:10px 14px;font-size:1rem;list-style-position:inside}
+.std summary b{font-family:"Rubik",sans-serif;margin-inline-end:6px}
+.std .tb{display:block;font-size:.8rem;color:var(--soft);margin-top:2px}
+.std ul{margin:0;padding:4px 32px 12px 14px;line-height:1.8}
+.std li b{display:inline-block;min-width:64px;color:var(--brand)}
+.lvl{margin:18px 2px 6px;font-family:"Rubik",sans-serif;color:var(--soft);font-size:1rem}
 textarea.note{width:100%;font:inherit;font-size:.92rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px 10px;min-height:38px;resize:vertical}
 .pnote{margin-top:6px;font-size:.9rem;border-radius:10px;padding:7px 10px;white-space:pre-wrap}
 .pnote.omer{background:var(--omer-soft)} .pnote.shaham{background:var(--shaham-soft)}
@@ -260,49 +275,47 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
   <section class="panel" id="flags">
     <div class="card"><h3>הכללים של המועצה</h3><ul>
       <li>על דגלון כותבים <b>רק את מספר התקן</b>. שום מילה נוספת, גם לא שם הנושא.</li>
-      <li>מותר למרקר מילה או משפט. אסור סימונים שיוצרים "כתב סתרים", ואסור לכתוב בספר.</li>
-      <li>ספר עם כיתוב נוסף על דגלון, או כיתוב שלא במקור, נחשב תרמית. ספר שאול או קנוי: לבדוק שהוא עומד בכללים.</li>
-      <li>מותר להביא ספרים משנים שונות, והמהדורה העדכנית היא 2025. אפשר גם את תקן 40 (מלכ״רים).</li>
+      <li>מותר למרקר מילה או משפט. אסור סימונים שיוצרים ״כתב סתרים״, ואסור לכתוב בספר.</li>
+      <li>ספר עם כיתוב נוסף על דגלון או בתוכו נחשב תרמית. ספר שאול או קנוי: לבדוק שהוא עומד בכללים.</li>
+      <li>מותר להביא ספרים משנים שונות. המהדורה העדכנית היא 2025, ומותר גם תקן 40 (מלכ״רים).</li>
     </ul></div>
     <div class="card"><h3>איך לסדר</h3><ul>
-      <li>דגלון אחד בתחילת כל תקן שבחומר. בתקנים הגדולים מוסיפים דגלון שני, עם אותו מספר, בנספח הנחיות היישום. בספר העברי נספח B הוא נספח ב׳, כלומר B52 הוא ב52.</li>
-      <li>אם צבעים מותרים אצלכם: צבע אחד לכל רמה במיקוד. אדום לרמה 1, צהוב לרמה 2, ירוק לרמה 3 ולפרשנויות. על הדגלון עצמו תמיד רק המספר.</li>
-      <li>מה למרקר: את המשפט שמגדיר מבחן או חריג, ואת המספרים (10%, 75%, 12 חודשים, 20%). לא פסקאות שלמות. מרקר שמסמן הכול לא עוזר למצוא כלום.</li>
-      <li>לסדר את הדגלונים עד 27.11 (משימה בלוז), כדי לתרגל עם הספר המסודר בכל הסימולציות.</li>
+      <li>דגלון בתחילת כל תקן שבחומר. בתקנים הגדולים דגלון שני, עם אותו מספר, בנספח.</li>
+      <li>בספר העברי האותיות הלועזיות הן עבריות: B היא ב׳ ו־A היא א׳. למשל B52 = ב52, ו־22A = 22א. ככה כתוב גם כאן.</li>
+      <li>אם צבעים מותרים: צבע לכל רמה. אדום לרמה 1, צהוב לרמה 2, ירוק לרמה 3 ולפרשנויות. על הדגלון רק המספר.</li>
+      <li>למרקר רק את המשפט שמגדיר מבחן או חריג, ואת המספרים (10%, 75%, 12 חודשים, 20%). מרקר על פסקה שלמה לא עוזר למצוא.</li>
+      <li>לחיצה על תקן פותחת את רשימת הסעיפים. ליד כל סעיף כתוב מה יש בו.</li>
     </ul></div>
-    <div class="card"><h3>רמה 1 · דגלון בולט + מרקר</h3>
-    <table class="flagtbl"><thead><tr><th>תקן</th><th>דגלונים</th><th>למרקר (מספרי סעיפים)</th></tr></thead><tbody>
-      <tr><td>IFRS 3</td><td>תחילת התקן + נספח B</td><td>19 שתי דרכים למדוד זכויות שאינן מקנות שליטה · 23 התחייבויות תלויות · 32 נוסחת המוניטין · 34–36 רכישה במחיר הזדמנותי · 37, 39 תמורה ותמורה מותנית · 42 צירוף בשלבים · 45 תקופת המדידה · 51–53 מה לא חלק מהצירוף, עלויות עסקה · 58 תמורה מותנית אחרי הרכישה · B7–B12 הגדרת עסק ומבחן הריכוזיות · B52 סילוק יחסים קודמים · B55 תשלומים לבעלי מניות שהם עובדים · B56–B62B החלפת תשלום מבוסס מניות</td></tr>
-      <tr><td>IFRS 10</td><td>תחילת התקן + נספח B</td><td>7 שלושת רכיבי השליטה · 23 שינוי בשיעור החזקה בלי איבוד שליטה · 25 איבוד שליטה · 27, 31 ישות השקעה · B86 נהלי איחוד · B94 ייחוס הפסדים · B96 · B97–B99 איבוד שליטה</td></tr>
-      <tr><td>IAS 28</td><td>תחילת התקן</td><td>3, 5–6 השפעה מהותית וחזקת 20% · 22 הפסקת שווי מאזני · 24 מעבר בין כלולה לעסקה משותפת · 25 ירידה בשיעור החזקה · 28 ביטול רווחים · 32 עודף עלות ומוניטין · 38–39 הפסדים מעבר להשקעה</td></tr>
-      <tr><td>IFRS 11</td><td>תחילת התקן</td><td>7 שליטה משותפת · 14–16 פעילות משותפת או עסקה משותפת · 20 טיפול בפעילות משותפת · 24 עסקה משותפת בשווי מאזני</td></tr>
-      <tr><td>IAS 32</td><td>תחילת התקן + הנחיות יישום</td><td>11 הגדרות · 16 מבחן ההון · 22 קבוע תמורת קבוע · 25 הוראות סילוק מותנות · 28–32 מכשיר מורכב · 33 מניות באוצר · 35 ריבית ודיבידנד · 37 עלויות עסקה הוניות · AG33–AG35 פדיון מוקדם ועידוד המרה</td></tr>
-      <tr><td>IFRS 9</td><td>תחילת התקן + נספח B</td><td>2.4–2.7 שימוש עצמי וסילוק בנטו · 3.3.1–3.3.3 גריעת התחייבות · B3.3.6 מבחן 10% · 4.1.2, 4.1.2A, 4.1.4 סיווג נכסים · 4.2.1 סיווג התחייבויות · 5.1.1 מדידה לראשונה · 5.4.1 ריבית על הברוטו · 5.5.3, 5.5.5 הפסדי אשראי · 5.7.5 מניות לרווח כולל אחר · B4.1 מבחן קרן וריבית</td></tr>
-      <tr><td>IAS 12</td><td>תחילת התקן</td><td>15, 24 חריג ההכרה לראשונה · 22A חכירות ופירוק · 39, 44 השקעות בחברות מוחזקות · 47 שיעורי מס שנחקקו · 51 אופן ההשבה · 51C נדל״ן להשקעה בשווי הוגן · 58, 61A פריטים ברווח כולל אחר ובהון · 66–68 צירופי עסקים · 68A–68C תשלום מבוסס מניות · 74 קיזוז</td></tr>
-      <tr><td>IAS 7</td><td>תחילת התקן</td><td>6 הגדרות · 7–9 שווי מזומנים · 18–20 שיטה עקיפה · 31–34 ריבית ודיבידנד · 35 מסים · 39–42 רכישה ומכירה של חברות בנות · 42A שינוי בבעלות בלי איבוד שליטה · 43 עסקאות שאינן במזומן · 44A–44E התחייבויות ממימון</td></tr>
-      <tr><td>IFRS 15</td><td>תחילת התקן + נספח B</td><td>9 תנאי חוזה · 18–21 שינויי חוזה · 22, 27 מחויבויות ביצוע · 31, 35 לאורך זמן · 47, 50–56 תמורה משתנה ומגבלה · 60–65 רכיב מימון · 66–69 תמורה שאינה במזומן · 70–72 תמורה ללקוח · 73–80 הקצאה · 91–94 עלויות השגת חוזה · B20–B27 זכות החזרה · B34–B38 אחראי עיקרי מול סוכן · B39–B43 זכות מהותית · B52–B63 רישיונות · B79–B82 חייב ושמור</td></tr>
-      <tr><td>IAS 37</td><td>תחילת התקן</td><td>10 הגדרות · 14 תנאי הכרה · 27–28 התחייבות תלויה · 31–35 נכס תלוי · 36–40 אומדן · 45–47 היוון · 53–54 שיפוי · 63 הפסדים עתידיים · 66–69 חוזה מכביד · 70–72 ארגון מחדש</td></tr>
-      <tr><td>IAS 38</td><td>תחילת התקן</td><td>8 הגדרות · 12 ניתן לזיהוי · 21 הכרה · 33–34 בצירוף עסקים · 48 מוניטין פנימי · 54 מחקר · 57 שישה תנאי פיתוח · 63 מותגים פנימיים · 69, 71 הוצאות · 75 הערכה מחדש · 88, 107–109 אורך חיים בלתי מוגדר · 97 הפחתה</td></tr>
-      <tr><td>IAS 40</td><td>תחילת התקן</td><td>5 הגדרות · 7–14 שימוש חלקי ושירותים נלווים · 16, 20 הכרה ומדידה · 30 בחירת מודל · 33–35 שווי הוגן · 53 חריג המדידה · 57 העברות · 60 לשימוש עצמי · 61–62 משימוש עצמי לשווי הוגן · 63 ממלאי · 66–73 גריעה</td></tr>
-      <tr><td>IFRS 2</td><td>תחילת התקן + נספח B</td><td>10–11 הוני ביום ההענקה · 19–21A תנאי הבשלה ותנאי שוק · 23 אין היפוך · 27, B42–B44 שינוי תנאים · 28 ביטול · 30–33 סילוק במזומן · 34–43 חלופות סילוק · 43A–43D הסדרים בקבוצה · B44A–B44C ממזומן להוני</td></tr>
-      <tr><td>IFRS 8</td><td>תחילת התקן</td><td>5 מגזר פעילות · 11 בר דיווח · 12 קריטריוני קיבוץ · 13 שלושת מבחני 10% · 14 קיבוץ קטנים · 15 מבחן 75% · 16 כל השאר · 23, 25–27 מה ואיך מודדים · 28 התאמות למאוחד · 32–34 גילויים ברמת הישות</td></tr>
-      <tr><td>IFRS 13</td><td>תחילת התקן</td><td>9 מחיר יציאה · 27–29 שימוש מיטבי · 61–66 טכניקות הערכה · 72–90 מדרג שווי הוגן (משמש גם להערכות שווי)</td></tr>
-    </tbody></table></div>
-    <div class="card"><h3>רמה 2 · דגלון + מרקר ממוקד</h3>
-    <table class="flagtbl"><tbody>
-      <tr><td>IAS 36</td><td>9–10 בדיקה שנתית · 12 סימנים · 18 סכום בר השבה · 30–57 שווי שימוש (44 בלי שיפורים, 50 בלי מימון ומס) · 59–64 הפסד · 80–87 הקצאת מוניטין · 90 · 104–105 הקצאת ההפסד והרצפה · 110–124 ביטול (124 מוניטין לא מתבטל) · נספח C זכויות שאינן מקנות שליטה</td></tr>
-      <tr><td>IFRS 5</td><td>6–8 מוחזק למכירה · 12A מוחזק לחלוקה · 15, 15A מדידה · 18 מדידה לפני הסיווג · 20–23 ירידת ערך בקבוצת מימוש · 25 הפסקת פחת · 26–29 שינוי בתכנית · 32–33 פעילות שהופסקה</td></tr>
-      <tr><td>IFRS 16</td><td>5–8 הקלות · 9 הגדרה · 12 הפרדת רכיבים · 18 תקופת החכירה · 22–28 מדידה לראשונה · 36–43 מדידה עוקבת ומחדש · 44–46 שינויי חוזה · 61–66 סיווג אצל המחכיר · 98–103 מכירה וחכירה חוזרת · B58 חכירת משנה</td></tr>
-      <tr><td>IAS 19</td><td>8 · 57 · 63–64 תקרת נכס · 99–112 שירות עבר, צמצום וסילוק · 120 שלושת הרכיבים · 123 ריבית נטו · 153–156 הטבות ארוכות טווח · 165 פיטורים</td></tr>
-      <tr><td>IAS 23</td><td>5 נכס כשיר · 8 · 12 אשראי ספציפי · 14 אשראי כללי · 17 התחלה · 20–21 השעיה · 22 סיום</td></tr>
-      <tr><td>IAS 21</td><td>8 פריט כספי · 9–12 מטבע פעילות · 21–23 רישום ומדידה · 28 הפרשי שער · תיקון חוסר יכולת המרה (2025)</td></tr>
-      <tr><td>IAS 1 · IAS 8 · IAS 10</td><td>IAS 1: 66–76 שוטף ולא שוטף (72B אמות מידה) · IAS 8: 5, 14, 19–22, 36, 41–42 · IAS 10: 3, 8–11, 12–13</td></tr>
-      <tr><td>IAS 2 · IAS 16 · IAS 27</td><td>IAS 2: 9, 28–33 שווי מימוש נטו · IAS 16: 16 רכיבי עלות ופירוק, 31, 39–41 הערכה מחדש, 43 רכיבים · IAS 27: 10, 12</td></tr>
-    </tbody></table></div>
-    <div class="card"><h3>רמה 3 ופרשנויות · דגלון בלבד</h3>
-      <p>IAS 33 (10, 19–20, 26–27, 31–33, 41, 45–46) · IAS 34 (28, B12) · IAS 20 (12, 20, 24, 29) · המסגרת המושגית (פרקים 4 ו־5: הגדרות והכרה) · תקן 40 מלכ״רים.</p>
-      <p>פרשנויות שכדאי לדגלן: IFRIC 17 חלוקת נכסים שאינם מזומן (10–13) · IFRIC 21 היטלים (8, 11) · IFRIC 22 מקדמות במטבע חוץ (8–9) · IFRIC 23 אי ודאות במסים.</p>
-    </div>
+    <h3 class="lvl">רמה 1 · דגלון בולט ומרקר</h3>
+    <details class="std"><summary><b>IFRS 3</b> צירופי עסקים<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>19</b> · שתי דרכים למדוד זכויות שאינן מקנות שליטה</li><li><b>23</b> · התחייבויות תלויות מוכרות בצירוף</li><li><b>32</b> · נוסחת המוניטין</li><li><b>34–36</b> · רכישה במחיר הזדמנותי</li><li><b>37, 39</b> · התמורה, כולל תמורה מותנית</li><li><b>42</b> · צירוף בשלבים: מדידה מחדש של ההחזקה הקודמת</li><li><b>45</b> · תקופת המדידה</li><li><b>51–53</b> · מה לא חלק מהצירוף, ועלויות עסקה להוצאה</li><li><b>58</b> · תמורה מותנית אחרי הרכישה</li><li><b>ב7–ב12</b> · הגדרת עסק ומבחן הריכוזיות</li><li><b>ב52</b> · סילוק יחסים קודמים</li><li><b>ב55</b> · תשלומים לבעלי מניות שהם עובדים</li><li><b>ב56–ב62ב</b> · החלפת תשלום מבוסס מניות</li></ul></details>
+    <details class="std"><summary><b>IFRS 10</b> דוחות מאוחדים<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>7</b> · שלושת רכיבי השליטה</li><li><b>23</b> · שינוי בשיעור החזקה בלי איבוד שליטה: עסקה הונית</li><li><b>25</b> · איבוד שליטה</li><li><b>27, 31</b> · ישות השקעה</li><li><b>ב86</b> · נהלי האיחוד</li><li><b>ב94</b> · ייחוס הפסדים לזכויות שאינן מקנות שליטה</li><li><b>ב96</b> · התאמת הזכויות שאינן מקנות שליטה בשינוי שיעור</li><li><b>ב97–ב99</b> · איבוד שליטה: רווח והפסד ורווח כולל אחר</li></ul></details>
+    <details class="std"><summary><b>IAS 28</b> כלולות ועסקאות משותפות<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>3, 5–6</b> · השפעה מהותית וחזקת 20%</li><li><b>22</b> · הפסקת שווי מאזני</li><li><b>24</b> · מעבר בין כלולה לעסקה משותפת, בלי מדידה מחדש</li><li><b>25</b> · ירידה בשיעור החזקה: גריעה יחסית של רווח כולל אחר</li><li><b>28</b> · ביטול רווחים בעסקאות עם הכלולה</li><li><b>32</b> · עודף עלות ומוניטין</li><li><b>38–39</b> · הפסדים מעבר להשקעה</li></ul></details>
+    <details class="std"><summary><b>IFRS 11</b> הסדרים משותפים<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>7</b> · שליטה משותפת</li><li><b>14–16</b> · פעילות משותפת או עסקה משותפת</li><li><b>20</b> · הטיפול בפעילות משותפת</li><li><b>24</b> · עסקה משותפת בשווי מאזני</li></ul></details>
+    <details class="std"><summary><b>IAS 32</b> מכשירים פיננסיים: הצגה<span class="tb">דגלונים: תחילת התקן + נספח הנחיות היישום</span></summary><ul><li><b>11</b> · הגדרות</li><li><b>16</b> · מבחן ההון</li><li><b>22</b> · קבוע תמורת קבוע</li><li><b>25</b> · הוראות סילוק מותנות</li><li><b>28–32</b> · מכשיר מורכב: קודם ההתחייבות, וההון הוא השארית</li><li><b>33</b> · מניות באוצר</li><li><b>35</b> · ריבית ודיבידנד</li><li><b>37</b> · עלויות עסקה הוניות</li><li><b>AG33–AG35</b> · פדיון מוקדם ושינוי תנאים לעידוד המרה (בנספח הנחיות היישום)</li></ul></details>
+    <details class="std"><summary><b>IFRS 9</b> מכשירים פיננסיים<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>2.4–2.7</b> · שימוש עצמי וסילוק בנטו</li><li><b>3.3.1–3.3.3</b> · גריעת התחייבות פיננסית</li><li><b>ב3.3.6</b> · מבחן 10% לשינוי תנאים</li><li><b>4.1.2, 4.1.2א, 4.1.4</b> · סיווג נכסים פיננסיים</li><li><b>4.2.1</b> · סיווג התחייבויות פיננסיות</li><li><b>5.1.1</b> · מדידה לראשונה ועלויות עסקה</li><li><b>5.4.1</b> · ריבית אפקטיבית על היתרה ברוטו</li><li><b>5.5.3, 5.5.5</b> · הפסדי אשראי: כל אורך החיים מול 12 חודשים</li><li><b>5.7.5</b> · מניות לרווח כולל אחר</li><li><b>ב4.1</b> · מבחן קרן וריבית</li></ul></details>
+    <details class="std"><summary><b>IAS 12</b> מסים על הכנסה<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>15, 24</b> · חריג ההכרה לראשונה</li><li><b>22א</b> · חכירות ופירוק: אין חריג</li><li><b>39, 44</b> · השקעות בחברות מוחזקות</li><li><b>47</b> · שיעורי מס שנחקקו</li><li><b>51</b> · לפי אופן ההשבה</li><li><b>51ג</b> · נדל״ן להשקעה בשווי הוגן: חזקת מכירה</li><li><b>58, 61א</b> · פריטים ברווח כולל אחר ובהון</li><li><b>66–68</b> · צירופי עסקים</li><li><b>68א–68ג</b> · תשלום מבוסס מניות</li><li><b>74</b> · קיזוז</li></ul></details>
+    <details class="std"><summary><b>IAS 7</b> דוח תזרים מזומנים<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>6</b> · הגדרות</li><li><b>7–9</b> · שווי מזומנים</li><li><b>18–20</b> · שיטה עקיפה</li><li><b>31–34</b> · ריבית ודיבידנד: אפשרויות הסיווג</li><li><b>35</b> · מסים</li><li><b>39–42</b> · רכישה ומכירה של חברות בנות, נטו ממזומן</li><li><b>42א</b> · שינוי בבעלות בלי איבוד שליטה: פעילות מימון</li><li><b>43</b> · עסקאות שאינן במזומן</li><li><b>44א–44ה</b> · שינויים בהתחייבויות ממימון</li></ul></details>
+    <details class="std"><summary><b>IFRS 15</b> הכנסות מחוזים עם לקוחות<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>9</b> · תנאי חוזה</li><li><b>18–21</b> · שינויי חוזה</li><li><b>22, 27</b> · מחויבויות ביצוע נפרדות</li><li><b>31, 35</b> · קיום לאורך זמן</li><li><b>47, 50–59</b> · תמורה משתנה והמגבלה</li><li><b>60–65</b> · רכיב מימון משמעותי (63: הקלה עד שנה)</li><li><b>66–69</b> · תמורה שאינה במזומן</li><li><b>70–72</b> · תמורה שמשולמת ללקוח</li><li><b>73–80</b> · הקצאת מחיר העסקה</li><li><b>91–94</b> · עלויות השגת חוזה</li><li><b>ב20–ב27</b> · זכות החזרה</li><li><b>ב34–ב38</b> · אחראי עיקרי מול סוכן</li><li><b>ב39–ב43</b> · אופציות ללקוח: זכות מהותית</li><li><b>ב52–ב63</b> · רישיונות</li><li><b>ב79–ב82</b> · הסדרי חייב ושמור</li></ul></details>
+    <details class="std"><summary><b>IAS 37</b> הפרשות ותלויות<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>10</b> · הגדרות</li><li><b>14</b> · שלושת תנאי ההכרה</li><li><b>27–28</b> · התחייבות תלויה</li><li><b>31–35</b> · נכס תלוי</li><li><b>36–40</b> · אומדן מיטבי</li><li><b>45–47</b> · היוון</li><li><b>53–54</b> · שיפוי</li><li><b>63</b> · הפסדים תפעוליים עתידיים</li><li><b>66–69</b> · חוזה מכביד</li><li><b>70–72</b> · ארגון מחדש</li></ul></details>
+    <details class="std"><summary><b>IAS 38</b> נכסים בלתי מוחשיים<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>8</b> · הגדרות</li><li><b>12</b> · ניתן לזיהוי</li><li><b>21</b> · תנאי הכרה</li><li><b>33–34</b> · נרכש בצירוף עסקים</li><li><b>48</b> · מוניטין שנוצר פנימית</li><li><b>54</b> · מחקר להוצאה</li><li><b>57</b> · שישה תנאים לפיתוח</li><li><b>63</b> · מותגים פנימיים</li><li><b>69, 71</b> · מה תמיד להוצאה, ואין הכרה מאוחרת</li><li><b>75</b> · מודל הערכה מחדש: רק בשוק פעיל</li><li><b>88, 107–109</b> · אורך חיים בלתי מוגדר</li><li><b>97</b> · הפחתה</li></ul></details>
+    <details class="std"><summary><b>IAS 40</b> נדל״ן להשקעה<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>5</b> · הגדרות</li><li><b>7–14</b> · שימוש חלקי ושירותים נלווים</li><li><b>16, 20</b> · הכרה ומדידה לראשונה</li><li><b>30</b> · בחירת מודל</li><li><b>33–35</b> · מודל השווי ההוגן</li><li><b>53</b> · חריג: אין מדידה מהימנה</li><li><b>57</b> · העברות: שינוי בשימוש</li><li><b>60</b> · לשימוש עצמי: עלות נחשבת</li><li><b>61–62</b> · משימוש עצמי לשווי הוגן: כמו הערכה מחדש</li><li><b>63</b> · ממלאי: ההפרש לרווח והפסד</li><li><b>66–73</b> · גריעה</li></ul></details>
+    <details class="std"><summary><b>IFRS 2</b> תשלום מבוסס מניות<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>10–11</b> · הוני: שווי הוגן ביום ההענקה</li><li><b>19–21א</b> · תנאי הבשלה, תנאי שוק ותנאים שאינם הבשלה</li><li><b>23</b> · אין היפוך אחרי ההבשלה</li><li><b>27, ב42–ב44</b> · שינוי תנאים</li><li><b>28</b> · ביטול: האצת ההוצאה</li><li><b>30–33</b> · סילוק במזומן: מדידה מחדש</li><li><b>34–43</b> · חלופות סילוק</li><li><b>43א–43ד</b> · הסדרים בתוך קבוצה</li><li><b>ב44א–ב44ג</b> · מעבר ממזומן להוני</li></ul></details>
+    <details class="std"><summary><b>IFRS 8</b> מגזרי פעילות<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>5</b> · מגזר פעילות</li><li><b>11</b> · מגזר בר דיווח</li><li><b>12</b> · קריטריוני קיבוץ</li><li><b>13</b> · שלושת מבחני ה־10%</li><li><b>14</b> · קיבוץ מגזרים קטנים</li><li><b>15</b> · מבחן 75%</li><li><b>16</b> · ״כל השאר״</li><li><b>23, 25–27</b> · מה מגלים ואיך מודדים</li><li><b>28</b> · התאמות למאוחד</li><li><b>32–34</b> · גילויים ברמת הישות</li></ul></details>
+    <details class="std"><summary><b>IFRS 13</b> שווי הוגן · גם להערכות שווי<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>9</b> · מחיר יציאה</li><li><b>27–29</b> · שימוש מיטבי בנכס לא פיננסי</li><li><b>61–66</b> · טכניקות הערכה</li><li><b>72–90</b> · מדרג השווי ההוגן</li></ul></details>
+    <h3 class="lvl">רמה 2 · דגלון ומרקר ממוקד</h3>
+    <details class="std"><summary><b>IAS 36</b> ירידת ערך<span class="tb">דגלונים: תחילת התקן + נספח ג׳</span></summary><ul><li><b>9–10</b> · בדיקה שנתית למוניטין</li><li><b>12</b> · סימנים לירידת ערך</li><li><b>18</b> · סכום בר השבה</li><li><b>30–57</b> · שווי שימוש (44: בלי שיפורים עתידיים · 50: בלי מימון ומס)</li><li><b>59–64</b> · הכרה בהפסד</li><li><b>80–87</b> · הקצאת מוניטין ליחידות</li><li><b>90</b> · יחידה עם מוניטין</li><li><b>104–105</b> · הקצאת ההפסד והרצפה</li><li><b>110–124</b> · ביטול (124: מוניטין לא מתבטל)</li><li><b>נספח ג׳</b> · זכויות שאינן מקנות שליטה</li></ul></details>
+    <details class="std"><summary><b>IFRS 5</b> מוחזק למכירה ופעילות שהופסקה<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>6–8</b> · מוחזק למכירה</li><li><b>12א</b> · מוחזק לחלוקה</li><li><b>15, 15א</b> · מדידה</li><li><b>18</b> · מדידה לפני הסיווג</li><li><b>20–23</b> · ירידת ערך בקבוצת מימוש</li><li><b>25</b> · הפסקת פחת</li><li><b>26–29</b> · שינוי בתכנית</li><li><b>32–33</b> · פעילות שהופסקה</li></ul></details>
+    <details class="std"><summary><b>IFRS 16</b> חכירות<span class="tb">דגלונים: תחילת התקן + נספח ב׳</span></summary><ul><li><b>5–8</b> · הקלות</li><li><b>9</b> · הגדרה</li><li><b>12</b> · הפרדת רכיבים</li><li><b>18</b> · תקופת החכירה</li><li><b>22–28</b> · מדידה לראשונה</li><li><b>36–43</b> · מדידה עוקבת ומדידה מחדש</li><li><b>44–46</b> · שינויי חוזה</li><li><b>61–66</b> · סיווג אצל המחכיר</li><li><b>98–103</b> · מכירה וחכירה חוזרת</li><li><b>ב58</b> · חכירת משנה</li></ul></details>
+    <details class="std"><summary><b>IAS 19</b> הטבות עובד<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>8</b> · הגדרות</li><li><b>57</b> · השלבים</li><li><b>63–64</b> · תקרת נכס</li><li><b>99–112</b> · שירות עבר, צמצום וסילוק</li><li><b>120</b> · שלושת הרכיבים</li><li><b>123</b> · ריבית נטו</li><li><b>153–156</b> · הטבות ארוכות טווח אחרות</li><li><b>165</b> · הטבות פיטורים</li></ul></details>
+    <details class="std"><summary><b>IAS 23</b> עלויות אשראי<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>5</b> · נכס כשיר</li><li><b>8</b> · היוון</li><li><b>12</b> · אשראי ספציפי פחות הכנסות השקעה</li><li><b>14</b> · אשראי כללי: שיעור ממוצע</li><li><b>17</b> · תחילת היוון</li><li><b>20–21</b> · השעיה</li><li><b>22</b> · סיום</li></ul></details>
+    <details class="std"><summary><b>IAS 21</b> שערי חליפין · בלי פעילות חוץ<span class="tb">דגלונים: תחילת התקן</span></summary><ul><li><b>8</b> · פריט כספי</li><li><b>9–12</b> · מטבע הפעילות</li><li><b>21–23</b> · רישום ומדידה</li><li><b>28</b> · הפרשי שער לרווח והפסד</li><li><b>תיקון 2025</b> · חוסר יכולת המרה</li></ul></details>
+    <details class="std"><summary><b>IAS 1 · IAS 8 · IAS 10</b> הצגה, מדיניות, אירועים<span class="tb">דגלונים: דגלון לכל תקן</span></summary><ul><li><b>IAS 1: 66–76</b> · שוטף ולא שוטף (72ב: אמות מידה)</li><li><b>IAS 8: 5, 14, 19–22</b> · שינוי מדיניות ויישום למפרע</li><li><b>IAS 8: 36</b> · שינוי אומדן מכאן ולהבא</li><li><b>IAS 8: 41–42</b> · טעויות</li><li><b>IAS 10: 3, 8–11</b> · אירועים מתאמים ולא מתאמים</li><li><b>IAS 10: 12–13</b> · דיבידנד שהוכרז אחרי המאזן</li></ul></details>
+    <details class="std"><summary><b>IAS 2 · IAS 16 · IAS 27</b> מלאי, רכוש קבוע, נפרדים<span class="tb">דגלונים: דגלון לכל תקן</span></summary><ul><li><b>IAS 2: 9, 28–33</b> · שווי מימוש נטו</li><li><b>IAS 16: 16</b> · רכיבי העלות, כולל פירוק</li><li><b>IAS 16: 31, 39–41</b> · הערכה מחדש</li><li><b>IAS 16: 43</b> · רכיבים</li><li><b>IAS 27: 10, 12</b> · דוחות נפרדים ודיבידנד</li></ul></details>
+    <h3 class="lvl">רמה 3 ופרשנויות · דגלון</h3>
+    <details class="std"><summary><b>IAS 33</b> רווח למניה<span class="tb">דגלונים: דגלון</span></summary><ul><li><b>10</b> · בסיסי</li><li><b>19–20</b> · ממוצע משוקלל</li><li><b>26–27</b> · מניות הטבה</li><li><b>31–33</b> · מדולל</li><li><b>41</b> · רק מכשירים מדללים</li><li><b>45–46</b> · אופציות</li></ul></details>
+    <details class="std"><summary><b>IAS 34 · IAS 20</b> ביניים ומענקים<span class="tb">דגלונים: דגלון לכל תקן</span></summary><ul><li><b>IAS 34: 28, ב12</b> · אותה מדיניות, ושיעור המס</li><li><b>IAS 20: 12, 20, 24, 29</b> · הכרה והצגה של מענקים</li></ul></details>
+    <details class="std"><summary><b>מסגרת · תקן 40</b> מסגרת מושגית ומלכ״רים<span class="tb">דגלונים: דגלון לכל אחד</span></summary><ul><li><b>מסגרת: פרקים 4 ו־5</b> · הגדרות נכס והתחייבות, והכרה</li><li><b>תקן 40</b> · מלכ״רים</li></ul></details>
+    <details class="std"><summary><b>פרשנויות</b> IFRIC<span class="tb">דגלונים: דגלון לכל פרשנות</span></summary><ul><li><b>IFRIC 17: 10–13</b> · חלוקת נכסים שאינם מזומן</li><li><b>IFRIC 21: 8, 11</b> · היטלים</li><li><b>IFRIC 22: 8–9</b> · מקדמות במטבע חוץ</li><li><b>IFRIC 23</b> · אי ודאות במסים</li></ul></details>
     <p class="muted">מספרי הסעיפים לפי נוסח התקנים. אם משהו לא מסתדר בספר שלכם, תעדכנו כאן.</p>
   </section>
 </div>
@@ -337,7 +350,8 @@ const DAYS = [
  {d:'2026-11-22', type:'study', title:'פתיחה · ערב אחרי השיעור', tasks:[
    M('1122a','השיעור ב־16:00: לרשום כל מידע על הבחינה',0),
    M('1122b','לוודא רישום לבחינה (אחרון 30.11) ומחשב של המועצה',15,'בזימון כתוב: מי שלא ביקש מחשב של המועצה מביא מחשב משלו עם תוכנת הבחינות'),
-   M('1122c','לוודא בכתב את הזמן שאושר לכל חלק',15,'באזור האישי או במכתב האישור')]},
+   M('1122c','לוודא בכתב את הזמן שאושר לכל חלק',15,'באזור האישי או במכתב האישור'),
+   Q('1122d','הערכות שווי: השייטת','אביב 2024 ש6',15)]},
  {d:'2026-11-23', type:'study', tasks:[
    Q('1123a','צירופי עסקים','סתיו 2023 (מתכונת ישנה) ש4',22),
    Q('1123b','הכרה בהכנסה · IFRS 15','אביב 2024 ש7',12),
@@ -384,8 +398,7 @@ const DAYS = [
  {d:'2026-12-02', type:'study', tasks:[
    M('1202a','תחקיר סימולציה 1',150),
    Q('1202b','מכשירים פיננסיים','אביב 2021 ש5',11),
-   Q('1202c','רכוש קבוע','אביב 2020 ש4',12),
-   Q('1122d','הערכות שווי: השייטת','אביב 2024 ש6',15)]},
+   Q('1202c','רכוש קבוע','אביב 2020 ש4',12)]},
  {d:'2026-12-03', type:'study', tasks:[
    Q('1203a','צירופי עסקים','סתיו 2021 ש5',19),
    Q('1203b','מאוחדים, ישות השקעה וירידת ערך','אביב 2021 ש2',25),
@@ -520,7 +533,7 @@ function dayEl(day, opts={}){
   el.innerHTML=`<div class="dh"><span class="date">${fmt(day.d)}</span><span class="chip ${cls}">${lab}</span>${day.d===today?'<span class="chip c-today">היום</span>':''}${loadChip}${day.title?`<span class="dtitle">${day.title}</span>`:''}</div>`;
   day.tasks.forEach(task=>{ const row=document.createElement('div'); row.className='task'; row.dataset.id=task.id; row.innerHTML=taskHTML(task); el.appendChild(row); });
   const notes=document.createElement('div'); notes.className='notes';
-  if(ME) notes.innerHTML=`<textarea class="note" data-date="${day.d}" placeholder="ההערות שלי: ציון, זמן, מה למדתי…"></textarea><textarea class="note priv" data-kind="priv" data-date="${day.d}" placeholder="🔒 פרטי, רק אצלך: ציון מוערך ודגשים לשיפור"></textarea>`;
+  if(ME) notes.innerHTML=`<textarea class="note" data-date="${day.d}" placeholder="ההערות שלי: ציון, זמן, מה למדתי…"></textarea><div class="privbox"><div class="privview" role="button" tabindex="0" data-date="${day.d}"></div><textarea class="note priv" data-kind="priv" data-date="${day.d}" hidden placeholder="🔒 פרטי, רק אצלך: ציון מוערך ודגשים לשיפור"></textarea></div>`;
   (ME?[OTHER()]:['omer','shaham']).forEach(k=>{ notes.innerHTML+=`<div class="pnote ${k}" data-date="${day.d}" data-who="${k}" hidden></div>`; });
   el.appendChild(notes);
   return el;
@@ -582,6 +595,9 @@ function applyState(){
     row.querySelectorAll('.other').forEach(o=>{ const k=o.dataset.who; const ok=!!c[k]; o.classList.toggle('done',ok); o.textContent=`${PEOPLE[k].name}: ${ok?'✓ בוצע':'עוד לא'}`; });
   });
   document.querySelectorAll('textarea.note').forEach(ta=>{ if(document.activeElement!==ta) ta.value=S.notes[taKey(ta)]||''; });
+  document.querySelectorAll('.privview').forEach(v=>{ const s=S.notes[pkey(v.dataset.date)]||'';
+    v.innerHTML = s ? `<div class="ph">🔒 פרטי, רק אצלך <span>${v.classList.contains('open')?'לחיצה לסגירה':'לחיצה לקריאה'}</span></div><div class="pt">${esc(s)}</div><button type="button" class="pe">עריכה</button>`
+                    : `<span class="privempty">🔒 הוספת הערה פרטית · רק אתה רואה</span>`; });
   document.querySelectorAll('.pnote').forEach(p=>{ const v=S.notes[nkey(p.dataset.date,p.dataset.who)]||''; p.hidden=!v; p.innerHTML=v?`<b>${PEOPLE[p.dataset.who].name}:</b> ${esc(v)}`:''; });
   document.querySelectorAll('input.sc').forEach(i=>{ if(document.activeElement!==i){ const v=((S.scores[i.dataset.sim]||{})[i.dataset.who]||{})[i.dataset.part]; i.value=v??''; }});
   const total=(sim,who)=>{ const o=(S.scores[sim]||{})[who]||{}; const a=parseFloat(o.a), c=parseFloat(o.b); return (isNaN(a)&&isNaN(c))?null:{a:o.a||'–',b:o.b||'–',t:(a||0)+(c||0)}; };
@@ -606,6 +622,15 @@ document.addEventListener('change',e=>{
   if(t.matches('.task input[type=checkbox]')){ (S.checks[t.dataset.id]=S.checks[t.dataset.id]||{})[ME]=t.checked; applyState(); send({kind:'check',id:t.dataset.id,who:ME,value:t.checked}); }
   if(t.matches('input.sc') && t.dataset.who===ME){ const sc=S.scores[t.dataset.sim]=S.scores[t.dataset.sim]||{}; (sc[ME]=sc[ME]||{})[t.dataset.part]=t.value; applyState(); send({kind:'score',sim:t.dataset.sim,who:ME,part:t.dataset.part,value:t.value}); }
 });
+document.addEventListener('click',e=>{
+  const v=e.target.closest('.privview'); if(!v) return;
+  const box=v.parentElement, ta=box.querySelector('textarea.priv'), has=!!S.notes[pkey(v.dataset.date)];
+  if(e.target.closest('.pe') || !has){ v.hidden=true; ta.hidden=false; ta.value=S.notes[pkey(v.dataset.date)]||''; ta.style.height=Math.max(80,ta.scrollHeight+4)+'px'; ta.focus(); return; }
+  v.classList.toggle('open'); applyState();
+});
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.matches('.privview')){ e.preventDefault(); e.target.click(); } });
+document.addEventListener('focusout',e=>{ const ta=e.target; if(!ta.matches || !ta.matches('textarea.priv')) return;
+  const v=ta.parentElement.querySelector('.privview'); ta.hidden=true; v.hidden=false; v.classList.add('open'); applyState(); });
 let noteTimers={};
 document.addEventListener('input',e=>{
   const t=e.target; if(!ME || !t.matches('textarea.note')) return;
