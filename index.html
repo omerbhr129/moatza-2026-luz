@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>לוז מועצה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#18202e; --soft:#5d6779; --line:#e3e6ec;
+  --brand:#1f4e8c; --brand-soft:#e8f0fb; --sim:#8a2be2; --sim-soft:#f3eafd;
+  --exam:#c0392b; --exam-soft:#fdecea; --ok:#1e8449; --ok-soft:#e6f4ea;
+  --light:#7f8c8d; --today:#fff6d6; --today-line:#e9c046;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141c; --card:#171e29; --ink:#e7ebf2; --soft:#9aa4b5; --line:#2a3342;
+    --brand:#7fb0f5; --brand-soft:#1c2a3f; --sim:#c49bff; --sim-soft:#2a2140;
+    --exam:#ff8a7a; --exam-soft:#3a1f1c; --ok:#6fd393; --ok-soft:#173225;
+    --light:#9aa4b5; --today:#3a3218; --today-line:#b8952e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141c; --card:#171e29; --ink:#e7ebf2; --soft:#9aa4b5; --line:#2a3342;
+  --brand:#7fb0f5; --brand-soft:#1c2a3f; --sim:#c49bff; --sim-soft:#2a2140;
+  --exam:#ff8a7a; --exam-soft:#3a1f1c; --ok:#6fd393; --ok-soft:#173225;
+  --light:#9aa4b5; --today:#3a3218; --today-line:#b8952e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Assistant",system-ui,sans-serif;font-size:16px;line-height:1.45}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+header.top{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+h1{margin:0;font-size:1.5rem;font-weight:800;color:var(--brand)}
+.sub{color:var(--soft);margin-top:2px}
+.count{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.count .box{background:var(--brand-soft);border-radius:10px;padding:8px 12px;min-width:84px;text-align:center}
+.count .n{font-size:1.6rem;font-weight:800;color:var(--brand);line-height:1.1}
+.count .l{font-size:.8rem;color:var(--soft)}
+.prog{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.prog .p{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.sync{font-size:.8rem;color:var(--soft);margin-top:8px}
+nav.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+nav.tabs button{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav.tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+section.panel{display:none} section.panel.on{display:block}
+.week{margin:18px 0 8px;font-weight:800;color:var(--soft)}
+.day{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.day.today{background:var(--today);border-color:var(--today-line);box-shadow:0 0 0 2px var(--today-line) inset}
+.day.past{opacity:.92}
+.dh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.date{font-weight:800;font-size:1.05rem}
+.badge{font-size:.75rem;font-weight:700;border-radius:999px;padding:2px 10px}
+.b-study{background:var(--brand-soft);color:var(--brand)}
+.b-sim{background:var(--sim-soft);color:var(--sim)}
+.b-exam{background:var(--exam-soft);color:var(--exam)}
+.b-light{background:var(--line);color:var(--light)}
+.b-today{background:var(--today-line);color:#2b2100}
+.task{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:7px 0;border-top:1px dashed var(--line)}
+.task:first-of-type{border-top:none}
+.task .t{min-width:0}
+.task .q{display:block;color:var(--soft);font-size:.86rem}
+.who{display:flex;align-items:center;gap:4px;font-size:.8rem;color:var(--soft);white-space:nowrap;cursor:pointer;user-select:none}
+.who input{width:20px;height:20px;accent-color:var(--ok);cursor:pointer}
+.task.done-both .t{color:var(--ok)}
+textarea.note{width:100%;margin-top:8px;font:inherit;font-size:.92rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:8px;min-height:38px;resize:vertical}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+th{background:var(--brand-soft);color:var(--brand);font-weight:700}
+td input.sc{width:58px;font:inherit;border:1px solid var(--line);border-radius:6px;padding:3px 6px;background:var(--bg);color:var(--ink);text-align:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-bottom:12px}
+.card h3{margin:0 0 6px;color:var(--brand)}
+.card ul{margin:4px 0;padding-right:18px}
+.muted{color:var(--soft);font-size:.9rem}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 10px}
+@media (max-width:640px){
+  .prog{grid-template-columns:1fr}
+  .task{grid-template-columns:1fr auto}
+  .task .who:last-child{grid-column:2}
+  th,td{padding:7px 6px;font-size:.92rem}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>לוז הכנה לבחינת המועצה</h1>
+    <div class="sub">חשבונאות פיננסית מתקדמת · יום שני 21.12.2026 · 11:00 · בנייני האומה, ירושלים</div>
+    <div class="count" id="count"></div>
+    <div class="prog">
+      <div class="p"><b>עומר</b> · <span id="p-omer">0/0</span><div class="bar"><i id="b-omer"></i></div></div>
+      <div class="p"><b>שחם</b> · <span id="p-shaham">0/0</span><div class="bar"><i id="b-shaham"></i></div></div>
+    </div>
+    <div class="sync" id="sync">טוען…</div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-p="plan" class="on">הלוז</button>
+    <button data-p="sims">סימולציות</button>
+    <button data-p="facts">עובדות הבחינה</button>
+    <button data-p="topics">מפת נושאים</button>
+  </nav>
+
+  <section class="panel on" id="plan">
+    <div class="legend">
+      <span class="badge b-study">יום תרגול</span><span class="badge b-sim">סימולציה מלאה</span>
+      <span class="badge b-light">יום קל</span><span class="badge b-exam">הבחינה</span>
+    </div>
+    <div id="days"></div>
+  </section>
+
+  <section class="panel" id="sims">
+    <p class="muted">כל סימולציה מתחילה ב־11:00, כמו בבחינה. חלק א׳ 11:00–14:00, הפסקה, חלק ב׳ 15:00–18:00 (3 שעות לחלק, כולל תוספת הזמן). כל חלק שווה 50 נקודות.</p>
+    <table>
+      <thead><tr><th>#</th><th>תאריך</th><th>בחינה</th><th>עומר: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
+      <tbody id="simrows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel" id="facts">
+    <div class="card"><h3>מבנה</h3><ul>
+      <li>4 שעות בשני חלקים עם הפסקה: חלק א׳ (שאלות 1–3) שעתיים, 50%; חלק ב׳ (שאלות 4–7) שעתיים, 50%.</li>
+      <li>עם שעה תוספת לכל חלק: 3 שעות לחלק, כלומר <b>3.6 דקות לנקודה</b>. שאלה של 15% היא 54 דקות. אין הארכות ביום הבחינה.</li>
+      <li>7 עד 8 שאלות פתוחות, אין רב־ברירה. שאלה אחת לא עולה על 20 נקודות.</li>
+    </ul></div>
+    <div class="card"><h3>על המחשב</h3><ul>
+      <li>תוכנת הבחינות היא ExamApp של מח10, ועובדת רק על Windows עם אופיס 2016 ומעלה. מורידים מדף "התקנת תוכנת הבחינות" באתר המועצה.</li>
+      <li>יש דמו רשמי: במסך הכניסה מקלידים DEMOAC (או DEMOMAS) בשדה העליון.</li>
+      <li>פותרים בקובץ אקסל לכל שאלה. בשאלות אקסל השמירה ידנית: לוחצים "שמור" כל כמה דקות.</li>
+      <li>הבודקים פותחים את האקסל ורואים את הנוסחאות: נוסחאות ודרך מלאה. אחרי "סיום הבחינה" אין גישה לקבצים.</li>
+      <li>קיצורים ב־Windows: נעילת תא F4, עריכת תא F2, עיצוב Ctrl+1, סכום Alt+=, החלפת שפה Alt+Shift.</li>
+    </ul></div>
+    <div class="card"><h3>מה מביאים</h3><ul>
+      <li>ספר תקני IFRS בעברית של לשכת רואי החשבון, מודפס (המהדורה העדכנית: 2025, יצאה בינואר 2026). אין תקנים במחשב.</li>
+      <li>מותר גם תקן 40 (מלכ״רים) בהוצאת הלשכה. דגלונים רק עם מספר התקן, מותר למרקר, אסור לכתוב.</li>
+      <li>מחשבון אחד: פיננסי כמו Casio FC-200, או מדעי פשוט. אסור שעון חכם.</li>
+      <li>תעודה מזהה, מכתב הזימון ואישור ההתאמה.</li>
+    </ul></div>
+    <div class="card"><h3>מנהלה</h3><ul>
+      <li>רישום אחרון לבחינה: <b>30.11.2026</b>. אגרה 979 ש״ח. מחשב של המועצה מבקשים ברישום.</li>
+      <li>מכתב זימון נשלח עד 3 שבועות לפני הבחינה. אם לא הגיע עד 5 ימים לפני: BhinotR@justice.gov.il.</li>
+      <li>החומר: התקינה העדכנית, חוץ מתקנים שעוד לא עברה חצי שנה מכניסתם לתוקף. IFRS 18 נכנס רק ב־2027.</li>
+    </ul></div>
+    <div class="card"><h3>בזמן הבחינה</h3><ul>
+      <li>הנחה שלא נובעת מהשאלה: כותבים אותה במפורש בקובץ.</li>
+      <li>שאלה לבוחן בדף שאלות אצל המשגיחים, רק על נוסח השאלון. תיקונים מגיעים כהודעות מערכת, לקרוא אותן.</li>
+      <li>שורת נימוק ליד כל סיווג: המחוון מנקד את הנימוק.</li>
+    </ul></div>
+  </section>
+
+  <section class="panel" id="topics">
+    <p class="muted">לפי רשימת המיקוד הרשמית של המועצה (מאביב 2026), והופעות כנושא עיקרי בשבע בחינות המתכונת החדשה (סתיו 2023 עד אביב 2026).</p>
+    <div class="card"><h3>רמה 1 · לפחות 60 נקודות בבחינה</h3>
+    <table><thead><tr><th>נושא</th><th>הופעות</th></tr></thead><tbody>
+      <tr><td>צירופי עסקים ודוחות מאוחדים</td><td>7/7</td></tr>
+      <tr><td>מכשירים פיננסיים: הצגה, מדידה, הכרה וגריעה של התחייבויות (בלי גידור, גריעת נכסים ונגזרים משובצים)</td><td>5/7 · באביב 2026 38% מהבחינה</td></tr>
+      <tr><td>תשלום מבוסס מניות</td><td>5/7</td></tr>
+      <tr><td>הכרה בהכנסה · IFRS 15</td><td>4/7 · נעדר בשלושה מארבעת האחרונים</td></tr>
+      <tr><td>כלולות, עסקאות והסדרים משותפים</td><td>3/7</td></tr>
+      <tr><td>ניתוח דוחות והערכת שווי</td><td>3/7</td></tr>
+      <tr><td>מסים על הכנסה</td><td>3/7 · נעדר בשניים האחרונים</td></tr>
+      <tr><td>הפרשות, התחייבויות ונכסים תלויים</td><td>2/7</td></tr>
+      <tr><td>נדל״ן להשקעה</td><td>2/7</td></tr>
+      <tr><td>דוח תזרים מזומנים</td><td>1/7</td></tr>
+      <tr><td>מגזרי פעילות</td><td>1/7</td></tr>
+      <tr><td>נכסים בלתי מוחשיים</td><td>0/7 · עוד לא נשאל</td></tr>
+    </tbody></table></div>
+    <div class="card"><h3>רמה 2 · עד 4 שאלות נפרדות (יחד עם רמה 3)</h3>
+      <p>חכירות (4/7), ירידת ערך (4/7), הטבות עובד, עלויות אשראי, מוחזק למכירה, רכוש קבוע, הצגת דוחות, מטבע חוץ בלי פעילות חוץ. בלי שאלה נפרדת: שווי הוגן, מדיניות ואומדנים, אירועים לאחר תאריך המאזן, מלאי, דוחות נפרדים.</p></div>
+    <div class="card"><h3>רמה 3 · עד שאלה אחת, עד 10 נקודות</h3>
+      <p>פערים מול התקינה הישראלית, המסגרת המושגית, מלכ״רים, רווח למניה, דיווח ביניים, מענקים ממשלתיים.</p></div>
+  </section>
+</div>
+
+<script>
+const EXAM = Date.parse('2026-12-21T11:00:00+02:00');
+const SIMS = [
+  {id:'sim1', date:'2026-11-26', name:'סתיו 2023 (מתכונת חדשה)'},
+  {id:'sim2', date:'2026-12-02', name:'מועד מיוחד 30.5.2024'},
+  {id:'sim3', date:'2026-12-08', name:'אביב 2025'},
+  {id:'sim6', date:'2026-12-10', name:'הבחינה לדוגמה של המועצה · חלק א׳ בלבד'},
+  {id:'sim4', date:'2026-12-13', name:'סתיו 2025'},
+  {id:'sim5', date:'2026-12-17', name:'אביב 2026 · חזרה גנרלית'}
+];
+// type: study | sim | light | exam. לכל משימה id קבוע: הסימונים נשמרים לפיו, לא לשנות id קיים.
+const T = (id, t, q) => ({id, t, q});
+const DAYS = [
+ {d:'2026-11-22', type:'study', title:'פתיחה', tasks:[
+   T('1122a','השיעור ב־16:00: לרשום כל מידע על הבחינה'),
+   T('1122b','לוודא רישום לבחינה עד 30.11 (אגרה 979 ש״ח) ושביקשת מחשב של המועצה'),
+   T('1122c','לוודא בכתב שאושרה תוספת שעה לכל חלק','באזור האישי או במכתב האישור'),
+   T('1122d','הערכות שווי: השייטת','אביב 2024 ש6 · 15% · 54 דק׳')]},
+ {d:'2026-11-23', type:'study', tasks:[
+   T('1123a','צירופי עסקים','סתיו 2023 (מתכונת ישנה) ש4 · 22% · 79 דק׳'),
+   T('1123b','הכרה בהכנסה · IFRS 15','אביב 2024 ש7 · 12% · 43 דק׳'),
+   T('1123c','דגלונים לספר התקנים','מותר רק עם מספר התקן')]},
+ {d:'2026-11-24', type:'study', tasks:[
+   T('1124a','התחייבויות פיננסיות','סתיו 2023 (מתכונת ישנה) ש3 · 11% · 40 דק׳'),
+   T('1124b','שווי מאזני ומכשירים','אביב 2024 ש1 · 20% · 72 דק׳'),
+   T('1124c','להשיג מחשב Windows ולהתקין ExamApp','דף "התקנת תוכנת הבחינות" באתר המועצה')]},
+ {d:'2026-11-25', type:'study', tasks:[
+   T('1125a','מסים על הכנסה','אביב 2023 ש5 · 13% · 47 דק׳'),
+   T('1125b','תשלום מבוסס מניות','סתיו 2024 ש7 · 12% · 43 דק׳'),
+   T('1125c','דמו של ExamApp','קוד DEMOAC בשדה העליון · לתרגל שמירה ומעבר בין שאלות')]},
+ {d:'2026-11-26', type:'sim', sim:'sim1', tasks:[
+   T('1126a','סימולציה 1: חלק א׳','11:00–14:00'),
+   T('1126b','סימולציה 1: חלק ב׳','15:00–18:00')]},
+ {d:'2026-11-27', type:'study', tasks:[
+   T('1127a','תחקיר סימולציה 1'),
+   T('1127b','הפרשות, תלויות וחוזה מכביד · רמה 1','סתיו 2021 ש3 · 14% · 50 דק׳')]},
+ {d:'2026-11-28', type:'study', tasks:[
+   T('1128a','דוח תזרים מזומנים · רמה 1','אביב 2021 ש3 · 25% · 90 דק׳'),
+   T('1128b','חוזה מכביד','אביב 2024 ש4 · 10% · 36 דק׳')]},
+ {d:'2026-11-29', type:'study', tasks:[
+   T('1129a','הערכות שווי','סתיו 2024 ש4 · 17% · 61 דק׳'),
+   T('1129b','ירידת ערך','סתיו 2024 ש6 · 13% · 47 דק׳')]},
+ {d:'2026-11-30', type:'study', tasks:[
+   T('1130a','הסדרים משותפים · רמה 1','אביב 2022 ש3 · 18% · 65 דק׳'),
+   T('1130b','נכסים בלתי מוחשיים · רמה 1, עוד לא נשאל','רב־ברירה: סתיו 2021 ש1.4 · אביב 2020 ש1.1 · סתיו 2022 ש1.4')]},
+ {d:'2026-12-01', type:'study', tasks:[
+   T('1201a','שווי מאזני ומוחזק למכירה','סתיו 2024 ש1 · 18% · 65 דק׳'),
+   T('1201b','רכוש קבוע, נדל״ן להשקעה והכנסות','סתיו 2023 (מתכונת ישנה) ש2 · 20% · 72 דק׳')]},
+ {d:'2026-12-02', type:'sim', sim:'sim2', tasks:[
+   T('1202a','סימולציה 2: חלק א׳','11:00–14:00'),
+   T('1202b','סימולציה 2: חלק ב׳','15:00–18:00')]},
+ {d:'2026-12-03', type:'study', tasks:[
+   T('1203a','תחקיר סימולציה 2'),
+   T('1203b','מגזרי פעילות · רמה 1','סתיו 2020 ש3 · 28% · 101 דק׳')]},
+ {d:'2026-12-04', type:'study', tasks:[
+   T('1204a','מאוחדים ומסים','אביב 2022 ש2 · 30% · 108 דק׳'),
+   T('1204b','תשלום מבוסס מניות ומאוחדים','מועד מיוחד 19.5.2024 ש3 · 20% · 72 דק׳')]},
+ {d:'2026-12-05', type:'study', tasks:[
+   T('1205a','צירופי עסקים והפרשי תרגום','אביב 2023 ש2 · 28% · 101 דק׳'),
+   T('1205b','רווח למניה · רמה 3','סתיו 2024 ש5 · 8% · 29 דק׳')]},
+ {d:'2026-12-06', type:'study', tasks:[
+   T('1206a','תשלום מבוסס מניות','אביב 2023 ש3 · 22% · 79 דק׳'),
+   T('1206b','הפרשות ותלויות','מועד מיוחד 19.5.2024 ש4 · 16% · 58 דק׳')]},
+ {d:'2026-12-07', type:'study', tasks:[
+   T('1207a','מכשירים פיננסיים · IAS 32, IFRS 9','סתיו 2022 ש3 · 25% · 90 דק׳'),
+   T('1207b','רמה 3, עד שאלה אחת של 10 נק׳','הבדלי תקינה (סתיו 2021 ש4) · מסגרת מושגית · מלכ״רים · ביניים · מענקים'),
+   T('1207c','הכנה לסימולציה 3')]},
+ {d:'2026-12-08', type:'sim', sim:'sim3', tasks:[
+   T('1208a','סימולציה 3: חלק א׳','11:00–14:00'),
+   T('1208b','סימולציה 3: חלק ב׳','15:00–18:00')]},
+ {d:'2026-12-09', type:'study', tasks:[
+   T('1209a','תחקיר סימולציה 3'),
+   T('1209b','דוח תזרים מזומנים מאוחד','סתיו 2020 ש2 · 28% · 101 דק׳')]},
+ {d:'2026-12-10', type:'sim', sim:'sim6', tasks:[
+   T('1210a','חצי סימולציה: הבחינה לדוגמה של המועצה','11:00–14:00 · חלק א׳'),
+   T('1210b','תיקון חולשות')]},
+ {d:'2026-12-11', type:'study', tasks:[
+   T('1211a','פתרון חוזר: סטארק','סתיו 2024 ש3 · תזרים בצירוף עסקים'),
+   T('1211b','פתרון חוזר: אלפא','סתיו 2024 ש2 · מכשירים')]},
+ {d:'2026-12-12', type:'study', tasks:[
+   T('1212a','פתרון חוזר: שגב ומאי','אביב 2024 ש2 · ירידת ערך ומאוחדים'),
+   T('1212b','פתרון חוזר: יורו־ליג','מועד מיוחד 19.5.2024 ש5 · מטבע חוץ בלי פעילות חוץ'),
+   T('1212c','תיקון חולשות')]},
+ {d:'2026-12-13', type:'sim', sim:'sim4', tasks:[
+   T('1213a','סימולציה 4: חלק א׳','11:00–14:00'),
+   T('1213b','סימולציה 4: חלק ב׳','15:00–18:00')]},
+ {d:'2026-12-14', type:'study', tasks:[T('1214a','תחקיר סימולציה 4'),T('1214b','תיקון חולשות')]},
+ {d:'2026-12-15', type:'study', tasks:[T('1215a','תיקון חולשות'),T('1215b','חזרה על רמה 3')]},
+ {d:'2026-12-16', type:'study', tasks:[T('1216a','ספר החוקים: מעבר מלא'),T('1216b','הכנה לחזרה הגנרלית')]},
+ {d:'2026-12-17', type:'sim', sim:'sim5', tasks:[
+   T('1217a','סימולציה 5: חלק א׳','11:00–14:00 · חזרה גנרלית'),
+   T('1217b','סימולציה 5: חלק ב׳','15:00–18:00')]},
+ {d:'2026-12-18', type:'study', tasks:[T('1218a','תחקיר סימולציה 5'),T('1218b','חולשות אחרונות')]},
+ {d:'2026-12-19', type:'light', tasks:[T('1219a','חזרה קלה: ספר החוקים ודף לכל נושא'),T('1219b','סיום מוקדם')]},
+ {d:'2026-12-20', type:'light', tasks:[
+   T('1220a','בוקר קל'),
+   T('1220b','אריזה: ספר תקנים, מחשבון אחד, תעודה מזהה, מכתב הזימון ואישור ההתאמה'),
+   T('1220c','נסיעה לירושלים, הליכת היכרות לבנייני האומה, שינה מוקדמת')]},
+ {d:'2026-12-21', type:'exam', tasks:[T('1221a','הבחינה','11:00 · בנייני האומה · בהצלחה!')]}
+];
+const DOW = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const BADGE = {study:['b-study','תרגול'], sim:['b-sim','סימולציה'], light:['b-light','יום קל'], exam:['b-exam','הבחינה']};
+let S = {checks:{}, notes:{}, scores:{}, updated:0};
+const $ = s => document.querySelector(s);
+
+function todayIL(){
+  const p = new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  return p; // YYYY-MM-DD
+}
+function fmt(d){ const [y,m,dd]=d.split('-'); const w=new Date(Date.UTC(+y,+m-1,+dd)).getUTCDay(); return `${DOW[w]} ${+dd}.${+m}`; }
+function weekLabel(d){
+  const [y,m,dd]=d.split('-'); const t=Date.UTC(+y,+m-1,+dd); const start=Date.UTC(2026,10,22);
+  return Math.floor((t-start)/(7*864e5))+1;
+}
+
+function build(){
+  const box=$('#days'); box.innerHTML=''; let lastWeek=0; const today=todayIL();
+  DAYS.forEach(day=>{
+    const wk=weekLabel(day.d);
+    if(wk!==lastWeek){ lastWeek=wk; const h=document.createElement('div'); h.className='week'; h.textContent=`שבוע ${wk}`; box.appendChild(h); }
+    const el=document.createElement('div'); el.className='day'+(day.d===today?' today':'')+(day.d<today?' past':''); el.id='d-'+day.d;
+    const [cls,lab]=BADGE[day.type];
+    el.innerHTML=`<div class="dh"><span class="date">${fmt(day.d)}</span><span class="badge ${cls}">${lab}</span>${day.d===today?'<span class="badge b-today">היום</span>':''}${day.title?`<span class="muted">${day.title}</span>`:''}</div>`;
+    day.tasks.forEach(task=>{
+      const id=task.id; const row=document.createElement('div'); row.className='task'; row.dataset.id=id;
+      row.innerHTML=`<div class="t">${task.t}${task.q?`<span class="q">${task.q}</span>`:''}</div>
+        <label class="who"><input type="checkbox" data-id="${id}" data-who="omer">עומר</label>
+        <label class="who"><input type="checkbox" data-id="${id}" data-who="shaham">שחם</label>`;
+      el.appendChild(row);
+    });
+    const ta=document.createElement('textarea'); ta.className='note'; ta.placeholder='הערות, ציון, מה למדנו…'; ta.dataset.date=day.d; el.appendChild(ta);
+    box.appendChild(el);
+  });
+  const sb=$('#simrows'); sb.innerHTML='';
+  SIMS.forEach((s,i)=>{
+    const tr=document.createElement('tr');
+    const inp=(who,part)=>`<input class="sc" inputmode="decimal" data-sim="${s.id}" data-who="${who}" data-part="${part}" placeholder="${part==='a'?'א׳':'ב׳'}">`;
+    tr.innerHTML=`<td>${i+1}</td><td>${fmt(s.date)}</td><td>${s.name}</td><td>${inp('omer','a')} ${inp('omer','b')} <b class="tot" data-sim="${s.id}" data-who="omer"></b></td><td>${inp('shaham','a')} ${inp('shaham','b')} <b class="tot" data-sim="${s.id}" data-who="shaham"></b></td>`;
+    sb.appendChild(tr);
+  });
+}
+
+function applyState(){
+  let tot=0, done={omer:0,shaham:0};
+  document.querySelectorAll('.task').forEach(row=>{
+    const c=S.checks[row.dataset.id]||{}; tot++;
+    row.querySelectorAll('input').forEach(cb=>{ cb.checked=!!c[cb.dataset.who]; if(cb.checked) done[cb.dataset.who]++; });
+    row.classList.toggle('done-both', !!(c.omer && c.shaham));
+  });
+  for(const w of ['omer','shaham']){ $('#p-'+w).textContent=`${done[w]}/${tot}`; $('#b-'+w).style.width=(tot?done[w]/tot*100:0)+'%'; }
+  document.querySelectorAll('textarea.note').forEach(ta=>{ if(document.activeElement!==ta) ta.value=S.notes[ta.dataset.date]||''; });
+  document.querySelectorAll('input.sc').forEach(i=>{ if(document.activeElement!==i){ const v=((S.scores[i.dataset.sim]||{})[i.dataset.who]||{})[i.dataset.part]; i.value=v??''; }});
+  document.querySelectorAll('b.tot').forEach(b=>{ const o=(S.scores[b.dataset.sim]||{})[b.dataset.who]||{}; const a=parseFloat(o.a), c=parseFloat(o.b); b.textContent=(isNaN(a)&&isNaN(c))?'':' = '+((a||0)+(c||0)); });
+}
+
+function setSync(t){ $('#sync').textContent=t+(S.updated?` · עודכן ${new Date(S.updated).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem'})}`:''); }
+async function load(){
+  try{ const r=await fetch('/api/state',{cache:'no-store'}); if(r.ok){ S=await r.json(); applyState(); setSync('מסונכרן'); } else setSync('שגיאה בטעינה'); }
+  catch{ setSync('אין חיבור'); }
+}
+let queue=[], timer=null;
+function send(op){
+  queue.push(op); clearTimeout(timer);
+  timer=setTimeout(async()=>{ const ops=queue.splice(0); setSync('שומר…');
+    try{ const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ops})});
+      if(r.ok){ S=await r.json(); applyState(); setSync('נשמר'); } else setSync('שגיאה בשמירה'); }
+    catch{ setSync('אין חיבור, לא נשמר'); } }, 500);
+}
+document.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.matches('.task input[type=checkbox]')){ (S.checks[t.dataset.id]=S.checks[t.dataset.id]||{})[t.dataset.who]=t.checked; applyState(); send({kind:'check',id:t.dataset.id,who:t.dataset.who,value:t.checked}); }
+  if(t.matches('input.sc')){ const sc=S.scores[t.dataset.sim]=S.scores[t.dataset.sim]||{}; (sc[t.dataset.who]=sc[t.dataset.who]||{})[t.dataset.part]=t.value; applyState(); send({kind:'score',sim:t.dataset.sim,who:t.dataset.who,part:t.dataset.part,value:t.value}); }
+});
+let noteTimers={};
+document.addEventListener('input',e=>{
+  const t=e.target; if(!t.matches('textarea.note')) return;
+  S.notes[t.dataset.date]=t.value; clearTimeout(noteTimers[t.dataset.date]);
+  noteTimers[t.dataset.date]=setTimeout(()=>send({kind:'note',date:t.dataset.date,text:t.value}),900);
+});
+$('#tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('section.panel').forEach(p=>p.classList.toggle('on',p.id===b.dataset.p));
+});
+function tick(){
+  const ms=EXAM-Date.now(); const box=$('#count');
+  if(ms<=0){ box.innerHTML='<div class="box"><div class="n">בהצלחה!</div></div>'; return; }
+  const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5), m=Math.floor(ms%36e5/6e4);
+  const sims=SIMS.filter(s=>Date.parse(s.date+'T23:59:00+02:00')>Date.now()).length;
+  box.innerHTML=`<div class="box"><div class="n">${d}</div><div class="l">ימים</div></div><div class="box"><div class="n">${h}</div><div class="l">שעות</div></div><div class="box"><div class="n">${m}</div><div class="l">דקות</div></div><div class="box"><div class="n">${sims}</div><div class="l">סימולציות שנשארו</div></div>`;
+}
+build(); tick(); setInterval(tick,30000); load(); setInterval(load,20000);
+window.addEventListener('focus',load);
+setTimeout(()=>{ const t=document.querySelector('.day.today'); if(t) t.scrollIntoView({behavior:'smooth',block:'start'}); },300);
+</script>
+</body>
+</html>
