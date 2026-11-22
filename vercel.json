@@ -1,6 +1,7 @@
 {
   "regions": ["fra1"],
   "rewrites": [
+    { "source": "/haroosh", "destination": "/index.html" },
     { "source": "/harosh", "destination": "/index.html" },
     { "source": "/arosh", "destination": "/index.html" },
     { "source": "/shaham", "destination": "/index.html" }

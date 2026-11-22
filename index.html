@@ -202,11 +202,13 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
       <li>ספר תקני IFRS בעברית של לשכת רואי החשבון, מודפס (המהדורה העדכנית: 2025, יצאה בינואר 2026). אין תקנים במחשב.</li>
       <li>מותר גם תקן 40 (מלכ״רים) בהוצאת הלשכה. מותר להביא ספרים משנים שונות. דגלונים רק עם מספר התקן. מרקר מותר על מילה או משפט, בלי סימונים שיוצרים כתב סתרים. אסור לכתוב.</li>
       <li>מחשבון אחד: פיננסי כמו Casio FC-200, או מדעי פשוט. אסור שעון חכם.</li>
-      <li>תעודה מזהה, מכתב הזימון ואישור ההתאמה.</li>
+      <li>תעודה מזהה עם תמונה (תעודת זהות או רישיון נהיגה) ומכתב הזימון. בלי תעודה עם תמונה לא נבחנים.</li>
+      <li>מי שלא ביקש מחשב של המועצה מביא מחשב משלו עם תוכנת הבחינות, מטען ופד לעכבר. אופיס ואקסל ברישיון בתוקף.</li>
+      <li>אסור טלפון, שעון ואוזניות. מותר אטמי אוזניים. באולם מיזוג חזק: להביא שכבה חמה.</li>
     </ul></div>
     <div class="card"><h3>מנהלה</h3><ul>
       <li>רישום אחרון לבחינה: <b>30.11.2026</b>. אגרה 979 ש״ח. מחשב של המועצה מבקשים ברישום.</li>
-      <li>מכתב זימון נשלח עד 3 שבועות לפני הבחינה. אם לא הגיע עד 5 ימים לפני: BhinotR@justice.gov.il.</li>
+      <li>לפי הזימון: להגיע לפחות שעה לפני, כלומר עד 10:00. ב־10:45 הדרכה על תוכנת הבחינות. האתר ומספר השולחן נשלחים סמוך לבחינה. מלווים לא נשארים במתחם בין 11:00 ל־18:00.</li>
       <li>החומר: התקינה העדכנית, חוץ מתקנים שעוד לא עברה חצי שנה מכניסתם לתוקף. מה שנכנס לתוקף ב־1.1.2026 בחומר (תיקוני IFRS 9 לסיווג ומדידה, השיפורים השנתיים). IFRS 18 נכנס רק ב־2027.</li>
       <li><b>רשימת המיקוד לסתיו 2026 היא הרשימה המלאה</b> (הדף עודכן 8.9.2026). לאביב 2026 פורסמה רשימה מצומצמת שמחקה תזרים, הערכות שווי, עלויות אשראי, מסגרת מושגית, מלכ״רים ורווח למניה. <b>בסתיו 2026 כולם חוזרים.</b></li>
       <li>מילואים (מועד סתיו 2026): תוספת 30 דקות לכל חלק, בדיקה שלישית למי שקיבל 55 עד 59, ולמי שלא עבר ועומד בתנאי הזכאות, ציון לפי 5 השאלות הטובות. הבקשות נסגרו ב־21.11. חריגים: moazar@justice.gov.il.</li>
@@ -255,7 +257,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
 
 <script>
 const EXAM = Date.parse('2026-12-21T11:00:00+02:00');
-// הזמן לכל חלק נבחר אישית ונשמר רק בדפדפן. הריפו ציבורי: לא לכתוב כאן את הזמן של אף אחד.
+// הזמן הקבוע של כל אחד לכל חלק שמור במצב המשותף בשרת (מפתח cfg|part|<מפתח>), לא בקוד. הריפו ציבורי: לא לכתוב כאן את הזמן של אף אחד.
 const PARTS = [120, 150, 180];   // דקות לחלק
 const PART_PTS = 50;             // כל חלק שווה 50 נקודות
 const DEBRIEF = 2.9;             // דקות תחקור לנקודה ביום תרגול
@@ -266,7 +268,7 @@ const clock = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).p
 const partRange = p => { const s = p==='a' ? 660 : 660+PART+60; return `${clock(s)}–${clock(s+PART)}`; };
 const taskQ = t => t.part ? partRange(t.part) : t.q;
 // המפתחות הפנימיים (omer / shaham) נשמרים בשרת — לא לשנות. השם לתצוגה והקישור האישי כאן.
-const PEOPLE = { omer:{name:'הרוש', slug:'harosh', alias:['arosh']}, shaham:{name:'שחם', slug:'shaham'} };
+const PEOPLE = { omer:{name:'הרוש', slug:'haroosh', alias:['harosh','arosh']}, shaham:{name:'שחם', slug:'shaham'} };
 const SIMS = [
   {id:'sim1', date:'2026-12-01', name:'סתיו 2023 (מתכונת חדשה)'},
   {id:'sim2', date:'2026-12-05', name:'מועד מיוחד 30.5.2024'},
@@ -282,7 +284,7 @@ const PT = (id, t, part) => ({id, t, part});   // חלק של סימולציה: 
 const DAYS = [
  {d:'2026-11-22', type:'study', title:'פתיחה · ערב אחרי השיעור', tasks:[
    M('1122a','השיעור ב־16:00: לרשום כל מידע על הבחינה',0),
-   M('1122b','לוודא רישום לבחינה (אחרון 30.11) ומחשב של המועצה',15),
+   M('1122b','לוודא רישום לבחינה (אחרון 30.11) ומחשב של המועצה',15,'בזימון כתוב: מי שלא ביקש מחשב של המועצה מביא מחשב משלו עם תוכנת הבחינות'),
    M('1122c','לוודא בכתב את הזמן שאושר לכל חלק',15,'באזור האישי או במכתב האישור')]},
  {d:'2026-11-23', type:'study', tasks:[
    Q('1123a','צירופי עסקים','סתיו 2023 (מתכונת ישנה) ש4',22),
@@ -395,9 +397,9 @@ const DAYS = [
    M('1219b','סיום מוקדם',0)]},
  {d:'2026-12-20', type:'light', tasks:[
    M('1220a','בוקר קל',60),
-   M('1220b','אריזה: ספר תקנים, מחשבון אחד, תעודה מזהה, מכתב הזימון ואישור ההתאמה',20),
+   M('1220b','אריזה: ספר תקנים, מחשבון אחד, תעודה מזהה עם תמונה, מכתב הזימון, אטמי אוזניים, שכבה חמה',20,'בלי טלפון ובלי שעון באולם'),
    M('1220c','נסיעה לירושלים, הליכת היכרות לבנייני האומה, שינה מוקדמת',0)]},
- {d:'2026-12-21', type:'exam', tasks:[M('1221a','הבחינה',0,'11:00 · בנייני האומה · בהצלחה!')]}
+ {d:'2026-12-21', type:'exam', tasks:[M('1221a','הבחינה',0,'להגיע עד 10:00 · הדרכה על התוכנה ב־10:45 · הבחינה ב־11:00 · בהצלחה!')]}
 ];
 const DOW = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
 const TYPE = {study:['c-study','תרגול'], sim:['c-sim','סימולציה'], light:['c-light','יום קל'], exam:['c-exam','הבחינה']};
@@ -422,20 +424,11 @@ function detectMe(){
 }
 let ME = detectMe();
 const OTHER = () => ME==='omer' ? 'shaham' : 'omer';
-function savePart(v){ try{ if(ME) localStorage.setItem('luz-part-'+ME, String(v)); }catch{} }
-function readPart(){
-  const params=new URLSearchParams(location.search), fromLink=+params.get('t');
-  if(ME && PARTS.includes(fromLink)){
-    savePart(fromLink); params.delete('t');
-    const rest=params.toString(); history.replaceState(null,'',location.pathname+(rest?'?'+rest:''));
-    return fromLink;
-  }
-  try{ const s=+localStorage.getItem('luz-part-'+ME); if(PARTS.includes(s)) return s; }catch{}
-  return 180;
-}
+function readPart(){ const v=+((S.notes||{})['cfg|part|'+ME]); return PARTS.includes(v) ? v : 180; }
+function syncPart(){ const v=readPart(); if(v!==PART){ PART=v; renderAll(); } }
 PART = readPart();
 function renderTimes(){
-  $('#simTimes').textContent=`כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ ${partRange('a')}, הפסקה של שעה, חלק ב׳ ${partRange('b')} (${hm(PART)} שעות לחלק, לפי הזמן שבחרת). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.`;
+  $('#simTimes').textContent=`כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ ${partRange('a')}, הפסקה של שעה, חלק ב׳ ${partRange('b')} (${hm(PART)} שעות לחלק, הזמן שלך). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.`;
   $('#paceFact').innerHTML=`הזמן שלך לכל חלק: ${hm(PART)} שעות, כלומר <b>${pace().toFixed(1)} דקות לנקודה</b>. שאלה של 15% היא ${Math.round(15*pace())} דקות. אין הארכות ביום הבחינה.`;
   $('#paceSolve').textContent=`פתרון: ${pace().toFixed(1)} דקות לנקודה, קצב הבחינה לפי הזמן שלך.`;
   $('#paceLoad').textContent=loadRate().toFixed(1);
@@ -450,8 +443,7 @@ function renderMe(){
   const box=$('#me');
   if(!ME){ box.innerHTML='<b>לא נבחר משתמש</b><br><button id="pick">בחירה</button>'; }
   else{ const url=`${location.host}/${PEOPLE[ME].slug}`;
-    box.innerHTML=`נכנסת בתור <b>${PEOPLE[ME].name}</b><br><span style="opacity:.8">${url}</span> · <button id="pick">החלפה</button><br><label>הזמן שלי לכל חלק: <select id="partSel" aria-label="הזמן שלי לכל חלק">${PARTS.map(p=>`<option value="${p}"${p===PART?' selected':''}>${hm(p)}</option>`).join('')}</select></label>`;
-    $('#partSel').onchange=e=>{ PART=+e.target.value; savePart(PART); renderAll(); }; }
+    box.innerHTML=`נכנסת בתור <b>${PEOPLE[ME].name}</b><br><span style="opacity:.8">${url}</span> · <button id="pick">החלפה</button>`; }
   $('#pick').onclick=()=>$('#chooser').classList.add('on');
   ['omer','shaham'].forEach(k=>$('#pp-'+k).classList.toggle('self',k===ME));
 }
@@ -544,7 +536,7 @@ function applyState(){
 }
 function setSync(t){ $('#sync').textContent=t+(S.updated?` · עודכן ${new Date(S.updated).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem',dateStyle:'short',timeStyle:'short'})}`:''); }
 async function load(){
-  try{ const r=await fetch('/api/state',{cache:'no-store'}); if(r.ok){ S=await r.json(); applyState(); setSync('מסונכרן'); } else setSync('שגיאה בטעינה'); }
+  try{ const r=await fetch('/api/state',{cache:'no-store'}); if(r.ok){ S=await r.json(); syncPart(); applyState(); setSync('מסונכרן'); } else setSync('שגיאה בטעינה'); }
   catch{ setSync('אין חיבור'); }
 }
 let queue=[], timer=null;
