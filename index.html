@@ -11,42 +11,46 @@
 <style>
 :root{
   --bg:#f3f5f9; --card:#ffffff; --ink:#151b28; --soft:#5f697b; --line:#e2e6ee;
-  --brand:#1d4ed8; --brand-2:#0f2f7a; --brand-soft:#e9f0ff;
+  --brand:#1d4ed8; --brand-soft:#e9f0ff;
   --sim:#7c3aed; --sim-soft:#f1e9ff; --exam:#dc2626; --exam-soft:#fdecec;
   --light:#64748b; --light-soft:#eef1f5; --ok:#15803d; --ok-soft:#e5f5ea;
-  --omer:#1d4ed8; --shaham:#0f9f6e;
+  --omer:#1d4ed8; --omer-soft:#e3ecff; --shaham:#0f9f6e; --shaham-soft:#ddf6ec;
   --today:#fff8db; --today-line:#eab308; --shadow:0 1px 2px rgba(16,24,40,.05),0 2px 8px rgba(16,24,40,.04);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0c111a; --card:#141b27; --ink:#e8ecf3; --soft:#9aa5b8; --line:#253043;
-    --brand:#7aa2ff; --brand-2:#c7d6ff; --brand-soft:#18243b;
-    --sim:#b794ff; --sim-soft:#251c3b; --exam:#ff8b8b; --exam-soft:#3a1c1c;
+    --brand:#7aa2ff; --brand-soft:#18243b; --sim:#b794ff; --sim-soft:#251c3b; --exam:#ff8b8b; --exam-soft:#3a1c1c;
     --light:#9aa5b8; --light-soft:#1b2433; --ok:#5fd28c; --ok-soft:#14301f;
-    --omer:#7aa2ff; --shaham:#45d3a2; --today:#2c2712; --today-line:#caa21d; --shadow:none;
+    --omer:#7aa2ff; --omer-soft:#1a2a47; --shaham:#45d3a2; --shaham-soft:#123327;
+    --today:#2c2712; --today-line:#caa21d; --shadow:none;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0c111a; --card:#141b27; --ink:#e8ecf3; --soft:#9aa5b8; --line:#253043;
-  --brand:#7aa2ff; --brand-2:#c7d6ff; --brand-soft:#18243b;
-  --sim:#b794ff; --sim-soft:#251c3b; --exam:#ff8b8b; --exam-soft:#3a1c1c;
+  --brand:#7aa2ff; --brand-soft:#18243b; --sim:#b794ff; --sim-soft:#251c3b; --exam:#ff8b8b; --exam-soft:#3a1c1c;
   --light:#9aa5b8; --light-soft:#1b2433; --ok:#5fd28c; --ok-soft:#14301f;
-  --omer:#7aa2ff; --shaham:#45d3a2; --today:#2c2712; --today-line:#caa21d; --shadow:none;
+  --omer:#7aa2ff; --omer-soft:#1a2a47; --shaham:#45d3a2; --shaham-soft:#123327;
+  --today:#2c2712; --today-line:#caa21d; --shadow:none;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Assistant",system-ui,sans-serif;font-size:16px;line-height:1.45}
 .wrap{max-width:1000px;margin:0 auto;padding:0 16px 40px}
-.hero{background:linear-gradient(135deg,#1d4ed8 0%,#0f2f7a 100%);color:#fff;border-radius:0 0 22px 22px;padding:22px 20px 18px;margin:0 -16px 0;box-shadow:var(--shadow)}
-.hero h1{margin:0;font-family:"Rubik",sans-serif;font-size:1.55rem;font-weight:800;letter-spacing:-.01em}
-.hero .sub{opacity:.85;margin-top:2px;font-size:.95rem}
+.hero{background:linear-gradient(135deg,#1d4ed8 0%,#0f2f7a 100%);color:#fff;border-radius:0 0 22px 22px;padding:20px 20px 16px;margin:0 -16px;box-shadow:var(--shadow)}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.hero h1{margin:0;font-family:"Rubik",sans-serif;font-size:1.5rem;font-weight:800}
+.hero .sub{opacity:.85;margin-top:2px;font-size:.93rem}
+.me{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:12px;padding:6px 12px;font-size:.9rem;text-align:left}
+.me b{font-size:1rem}
+.me button{font:inherit;font-size:.8rem;background:none;border:none;color:#cfe0ff;text-decoration:underline;cursor:pointer;padding:0}
 .count{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .count .box{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:7px 12px;min-width:78px;text-align:center}
-.count .n{font-family:"Rubik",sans-serif;font-size:1.5rem;font-weight:800;line-height:1.1}
+.count .n{font-family:"Rubik",sans-serif;font-size:1.45rem;font-weight:800;line-height:1.1}
 .count .l{font-size:.78rem;opacity:.85}
 .people{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 .person{background:rgba(255,255,255,.1);border-radius:12px;padding:9px 12px}
+.person.self{background:rgba(255,255,255,.2);outline:1.5px solid rgba(255,255,255,.45)}
 .person .row{display:flex;justify-content:space-between;align-items:baseline;font-size:.92rem}
-.person b{font-size:1rem}
 .bar{height:7px;background:rgba(255,255,255,.2);border-radius:6px;overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;width:0;transition:width .35s;border-radius:6px}
 #b-omer{background:#9ec0ff} #b-shaham{background:#7ff0c8}
@@ -56,13 +60,15 @@ nav.tabs button{font:inherit;font-weight:700;border:1px solid var(--line);backgr
 nav.tabs button.on{background:var(--brand);border-color:var(--brand);color:#fff}
 section.panel{display:none} section.panel.on{display:block}
 .legend{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 6px;color:var(--soft);font-size:.86rem}
-details.past{margin:4px 0 10px}
-details.past summary{cursor:pointer;color:var(--soft);font-weight:700;padding:6px 0}
+details.past{margin:4px 0 10px} details.past summary{cursor:pointer;color:var(--soft);font-weight:700;padding:6px 0}
 .week{display:flex;justify-content:space-between;align-items:baseline;margin:18px 2px 8px;font-weight:800;color:var(--soft)}
 .week span{font-weight:600;font-size:.86rem}
-.day{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;margin-bottom:10px;box-shadow:var(--shadow);border-inline-start:5px solid var(--brand)}
+.day{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px 10px;margin-bottom:10px;box-shadow:var(--shadow);border-inline-start:5px solid var(--brand)}
 .day.t-sim{border-inline-start-color:var(--sim)} .day.t-exam{border-inline-start-color:var(--exam)} .day.t-light{border-inline-start-color:var(--light)}
 .day.today{background:var(--today);border-color:var(--today-line);border-inline-start-color:var(--today-line)}
+.day.big{padding:16px 18px 14px}
+.day.big .date{font-size:1.35rem}
+.day.big .task .t{font-size:1.05rem}
 .dh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
 .date{font-family:"Rubik",sans-serif;font-weight:800;font-size:1.08rem}
 .chip{font-size:.74rem;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
@@ -71,20 +77,33 @@ details.past summary{cursor:pointer;color:var(--soft);font-weight:700;padding:6p
 .c-today{background:var(--today-line);color:#2a2000} .c-load{background:var(--light-soft);color:var(--soft)}
 .c-load.heavy{background:#fde8d4;color:#9a4a00}
 .dtitle{color:var(--soft);font-size:.9rem}
-.task{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px dashed var(--line)}
+.task{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px dashed var(--line)}
 .task:first-of-type{border-top:none}
 .task .t{min-width:0;font-weight:600}
 .task .q{display:block;color:var(--soft);font-size:.86rem;font-weight:400}
 .task .meta{display:block;margin-top:2px;font-size:.78rem;color:var(--soft);font-weight:600}
-.task.done-both .t{color:var(--ok)}
-.toggles{display:flex;gap:6px}
-.tg{position:relative;display:inline-flex}
-.tg input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
-.tg span{display:inline-flex;align-items:center;justify-content:center;min-width:52px;height:32px;padding:0 10px;border-radius:999px;border:1.5px solid var(--line);font-size:.82rem;font-weight:700;color:var(--soft);background:var(--card);transition:all .15s}
-.tg input:focus-visible+span{outline:2px solid var(--brand);outline-offset:2px}
-.tg.omer input:checked+span{background:var(--omer);border-color:var(--omer);color:#fff}
-.tg.shaham input:checked+span{background:var(--shaham);border-color:var(--shaham);color:#fff}
-textarea.note{width:100%;margin-top:6px;font:inherit;font-size:.92rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px 10px;min-height:38px;resize:vertical}
+.task.mine-done .t{color:var(--ok)}
+.status{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.mybtn{position:relative;display:inline-flex}
+.mybtn input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.mybtn span{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);font-size:.86rem;font-weight:800;color:var(--soft);background:var(--card);transition:all .15s;white-space:nowrap}
+.mybtn input:focus-visible+span{outline:2px solid var(--brand);outline-offset:2px}
+.mybtn.omer input:checked+span{background:var(--omer);border-color:var(--omer);color:#fff}
+.mybtn.shaham input:checked+span{background:var(--shaham);border-color:var(--shaham);color:#fff}
+.other{font-size:.78rem;font-weight:700;border-radius:999px;padding:3px 9px;color:var(--soft);background:var(--light-soft);white-space:nowrap}
+.other.done.omer{background:var(--omer-soft);color:var(--omer)} .other.done.shaham{background:var(--shaham-soft);color:var(--shaham)}
+.notes{margin-top:6px}
+textarea.note{width:100%;font:inherit;font-size:.92rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);padding:8px 10px;min-height:38px;resize:vertical}
+.pnote{margin-top:6px;font-size:.9rem;border-radius:10px;padding:7px 10px;white-space:pre-wrap}
+.pnote.omer{background:var(--omer-soft)} .pnote.shaham{background:var(--shaham-soft)}
+.pnote b{font-size:.82rem}
+.todaynav{display:flex;align-items:center;gap:8px;margin:2px 0 10px;flex-wrap:wrap}
+.todaynav button{font:inherit;font-weight:700;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 12px;cursor:pointer}
+.todaynav .lbl{font-weight:800;color:var(--soft);margin-inline-start:4px}
+.next{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-top:12px;box-shadow:var(--shadow)}
+.next h4{margin:0 0 4px;font-family:"Rubik",sans-serif;font-size:.98rem;color:var(--soft)}
+.next ul{margin:2px 0;padding-right:18px}
+.banner{background:var(--sim-soft);color:var(--sim);border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:10px}
 table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
 th{background:var(--brand-soft);color:var(--brand);font-weight:700}
@@ -93,35 +112,64 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
 .card h3{margin:0 0 6px;color:var(--brand);font-family:"Rubik",sans-serif;font-size:1.05rem}
 .card ul{margin:4px 0;padding-right:18px}
 .muted{color:var(--soft);font-size:.9rem}
+#chooser{position:fixed;inset:0;z-index:20;background:rgba(10,15,25,.6);display:none;align-items:center;justify-content:center;padding:16px}
+#chooser.on{display:flex}
+#chooser .box{background:var(--card);color:var(--ink);border-radius:18px;padding:22px;max-width:360px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+#chooser h2{margin:0 0 4px;font-family:"Rubik",sans-serif}
+#chooser .opts{display:flex;gap:10px;justify-content:center;margin-top:14px}
+#chooser .opts button{font:inherit;font-weight:800;font-size:1.05rem;border:none;border-radius:12px;padding:12px 22px;color:#fff;cursor:pointer}
 @media (max-width:640px){
   .people{grid-template-columns:1fr}
   .task{grid-template-columns:1fr}
-  .toggles{justify-content:flex-start}
+  .status{justify-content:flex-start}
   th,td{padding:7px 6px;font-size:.92rem}
 }
 </style>
 </head>
 <body>
+<div id="chooser"><div class="box">
+  <h2>מי נכנס?</h2>
+  <div class="muted">הסימונים וההערות יירשמו בשמך. בפעם הבאה אפשר להיכנס ישר מהקישור האישי.</div>
+  <div class="opts"><button data-me="omer" style="background:var(--omer)">ארוש</button><button data-me="shaham" style="background:var(--shaham)">שחם</button></div>
+</div></div>
 <div class="wrap">
   <header class="hero">
-    <h1>לוז הכנה לבחינת המועצה</h1>
-    <div class="sub">חשבונאות פיננסית מתקדמת · שני 21.12.2026 · 11:00 · בנייני האומה, ירושלים</div>
+    <div class="hero-top">
+      <div>
+        <h1>לוז הכנה לבחינת המועצה</h1>
+        <div class="sub">חשבונאות פיננסית מתקדמת · שני 21.12.2026 · 11:00 · בנייני האומה, ירושלים</div>
+      </div>
+      <div class="me" id="me"></div>
+    </div>
     <div class="count" id="count"></div>
     <div class="people">
-      <div class="person"><div class="row"><b>עומר</b><span id="p-omer">0/0</span></div><div class="bar"><i id="b-omer"></i></div></div>
-      <div class="person"><div class="row"><b>שחם</b><span id="p-shaham">0/0</span></div><div class="bar"><i id="b-shaham"></i></div></div>
+      <div class="person" id="pp-omer"><div class="row"><b>ארוש</b><span id="p-omer">0/0</span></div><div class="bar"><i id="b-omer"></i></div></div>
+      <div class="person" id="pp-shaham"><div class="row"><b>שחם</b><span id="p-shaham">0/0</span></div><div class="bar"><i id="b-shaham"></i></div></div>
     </div>
     <div class="sync" id="sync">טוען…</div>
   </header>
 
   <nav class="tabs" id="tabs">
-    <button data-p="plan" class="on">הלוז</button>
+    <button data-p="today" class="on">היום</button>
+    <button data-p="plan">הלוז המלא</button>
     <button data-p="sims">סימולציות</button>
     <button data-p="facts">עובדות הבחינה</button>
     <button data-p="topics">מפת נושאים</button>
   </nav>
 
-  <section class="panel on" id="plan">
+  <section class="panel on" id="today">
+    <div class="todaynav">
+      <button id="prevDay" aria-label="יום קודם">→ יום קודם</button>
+      <button id="toToday">היום</button>
+      <button id="nextDay" aria-label="יום הבא">יום הבא ←</button>
+      <span class="lbl" id="dayLbl"></span>
+    </div>
+    <div id="nextSim"></div>
+    <div id="dayView"></div>
+    <div id="tomorrow"></div>
+  </section>
+
+  <section class="panel" id="plan">
     <div class="legend">
       <span class="chip c-study">תרגול</span><span class="chip c-sim">סימולציה</span><span class="chip c-light">יום קל</span><span class="chip c-exam">הבחינה</span>
       <span>· הזמן ליד כל יום הוא עומס משוער כולל תחקור</span>
@@ -130,9 +178,9 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
   </section>
 
   <section class="panel" id="sims">
-    <p class="muted">כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ 11:00–14:00, הפסקה של שעה, חלק ב׳ 15:00–18:00 (3 שעות לחלק, כולל תוספת הזמן). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר.</p>
+    <p class="muted">כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ 11:00–14:00, הפסקה של שעה, חלק ב׳ 15:00–18:00 (3 שעות לחלק, כולל תוספת הזמן). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.</p>
     <table>
-      <thead><tr><th>תאריך</th><th>בחינה</th><th>עומר: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
+      <thead><tr><th>תאריך</th><th>בחינה</th><th>ארוש: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
       <tbody id="simrows"></tbody>
     </table>
   </section>
@@ -200,7 +248,9 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
 <script>
 const EXAM = Date.parse('2026-12-21T11:00:00+02:00');
 const PACE = 3.6;   // דקות לנקודה בבחינה, כולל תוספת הזמן
-const LOAD = 6.5;   // דקות לנקודה ביום תרגול: 3.6 פתרון + תחקור, טעויות ומעבר על הפתרון
+const LOAD = 6.5;   // דקות לנקודה ביום תרגול: פתרון + תחקור
+// המפתחות הפנימיים (omer / shaham) נשמרים בשרת — לא לשנות. השם לתצוגה והקישור האישי כאן.
+const PEOPLE = { omer:{name:'ארוש', slug:'arosh'}, shaham:{name:'שחם', slug:'shaham'} };
 const SIMS = [
   {id:'sim1', date:'2026-12-01', name:'סתיו 2023 (מתכונת חדשה)'},
   {id:'sim2', date:'2026-12-05', name:'מועד מיוחד 30.5.2024'},
@@ -328,63 +378,124 @@ const DOW = ['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
 const TYPE = {study:['c-study','תרגול'], sim:['c-sim','סימולציה'], light:['c-light','יום קל'], exam:['c-exam','הבחינה']};
 let S = {checks:{}, notes:{}, scores:{}, updated:0};
 const $ = s => document.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const todayIL = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 function fmt(d){ const [y,m,dd]=d.split('-'); const w=new Date(Date.UTC(+y,+m-1,+dd)).getUTCDay(); return `${DOW[w]} ${+dd}.${+m}`; }
 function weekNo(d){ const [y,m,dd]=d.split('-'); return Math.floor((Date.UTC(+y,+m-1,+dd)-Date.UTC(2026,10,22))/(7*864e5))+1; }
-const tmin = t => t.pts ? Math.round(t.pts*LOAD/5)*5 : (t.m||0);
+const tmin = t => t.pts ? Math.round(t.pts*LOAD/5)*5 : (+t.m||0);
 const hm = m => `${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`;
-function dayLoad(day){ return day.tasks.reduce((a,t)=>a+tmin(t),0); }
-function dayPts(day){ return day.tasks.reduce((a,t)=>a+(t.pts||0),0); }
+const dayLoad = day => day.tasks.reduce((a,t)=>a+tmin(t),0);
+const dayPts = day => day.tasks.reduce((a,t)=>a+(t.pts||0),0);
 
+// ---- מי אני ----
+function detectMe(){
+  const seg=location.pathname.replace(/\/+$/,'').split('/').pop().toLowerCase();
+  for(const [k,v] of Object.entries(PEOPLE)) if(v.slug===seg) return k;
+  const q=new URLSearchParams(location.search).get('me'); if(q && PEOPLE[q]) return q;
+  try{ const s=localStorage.getItem('luz-me'); if(PEOPLE[s]) return s; }catch{}
+  return null;
+}
+let ME = detectMe();
+const OTHER = () => ME==='omer' ? 'shaham' : 'omer';
+function setMe(k){
+  ME=k; try{ localStorage.setItem('luz-me',k); }catch{}
+  history.replaceState(null,'','/'+PEOPLE[k].slug);
+  $('#chooser').classList.remove('on'); renderAll();
+}
+function renderMe(){
+  const box=$('#me');
+  if(!ME){ box.innerHTML='<b>לא נבחר משתמש</b><br><button id="pick">בחירה</button>'; }
+  else{ const url=`${location.host}/${PEOPLE[ME].slug}`;
+    box.innerHTML=`נכנסת בתור <b>${PEOPLE[ME].name}</b><br><span style="opacity:.8">${url}</span> · <button id="pick">החלפה</button>`; }
+  $('#pick').onclick=()=>$('#chooser').classList.add('on');
+  ['omer','shaham'].forEach(k=>$('#pp-'+k).classList.toggle('self',k===ME));
+}
+document.querySelectorAll('#chooser [data-me]').forEach(b=>b.onclick=()=>setMe(b.dataset.me));
+
+// ---- בניית משימה ויום ----
 function taskHTML(task){
   let meta='';
   if(task.pts) meta=`${task.pts} נק׳ · פתרון ${Math.round(task.pts*PACE)} דק׳ · עם תחקור ${hm(tmin(task))}`;
-  else if(task.m) meta=`${hm(task.m)}`;
+  else if(+task.m) meta=hm(+task.m);
+  const other = ME ? OTHER() : null;
+  const mine = ME ? `<label class="mybtn ${ME}"><input type="checkbox" data-id="${task.id}" aria-label="סיימתי: ${esc(task.t)}"><span>✓ סיימתי</span></label>` : '';
+  const others = (ME ? [other] : ['omer','shaham']).map(k=>`<span class="other ${k}" data-id="${task.id}" data-who="${k}"></span>`).join('');
   return `<div class="t">${task.t}${task.q?`<span class="q">${task.q}</span>`:''}${meta?`<span class="meta">${meta}</span>`:''}</div>
-    <div class="toggles">
-      <label class="tg omer"><input type="checkbox" data-id="${task.id}" data-who="omer" aria-label="עומר: ${task.t}"><span>עומר</span></label>
-      <label class="tg shaham"><input type="checkbox" data-id="${task.id}" data-who="shaham" aria-label="שחם: ${task.t}"><span>שחם</span></label>
-    </div>`;
+    <div class="status">${mine}${others}</div>`;
 }
-function dayEl(day, today){
-  const el=document.createElement('div'); el.className=`day t-${day.type}`+(day.d===today?' today':''); el.id='d-'+day.d;
+function dayEl(day, opts={}){
+  const today=todayIL();
+  const el=document.createElement('div'); el.className=`day t-${day.type}`+(day.d===today?' today':'')+(opts.big?' big':''); el.dataset.date=day.d;
   const [cls,lab]=TYPE[day.type]; const load=dayLoad(day), pts=dayPts(day);
   const loadChip = load ? `<span class="chip c-load${load>420?' heavy':''}">≈ ${hm(load)} ש׳${pts?` · ${pts} נק׳`:''}</span>` : '';
   el.innerHTML=`<div class="dh"><span class="date">${fmt(day.d)}</span><span class="chip ${cls}">${lab}</span>${day.d===today?'<span class="chip c-today">היום</span>':''}${loadChip}${day.title?`<span class="dtitle">${day.title}</span>`:''}</div>`;
   day.tasks.forEach(task=>{ const row=document.createElement('div'); row.className='task'; row.dataset.id=task.id; row.innerHTML=taskHTML(task); el.appendChild(row); });
-  const ta=document.createElement('textarea'); ta.className='note'; ta.placeholder='הערות, ציון, מה למדנו…'; ta.dataset.date=day.d; el.appendChild(ta);
+  const notes=document.createElement('div'); notes.className='notes';
+  if(ME) notes.innerHTML=`<textarea class="note" data-date="${day.d}" placeholder="ההערות שלי: ציון, זמן, מה למדתי…"></textarea>`;
+  (ME?[OTHER()]:['omer','shaham']).forEach(k=>{ notes.innerHTML+=`<div class="pnote ${k}" data-date="${day.d}" data-who="${k}" hidden></div>`; });
+  el.appendChild(notes);
   return el;
 }
-function build(){
+function buildPlan(){
   const box=$('#days'); box.innerHTML=''; const today=todayIL();
   const past=DAYS.filter(d=>d.d<today), rest=DAYS.filter(d=>d.d>=today);
-  if(past.length){ const det=document.createElement('details'); det.className='past'; det.innerHTML=`<summary>ימים שעברו (${past.length})</summary>`; past.forEach(d=>det.appendChild(dayEl(d,today))); box.appendChild(det); }
+  if(past.length){ const det=document.createElement('details'); det.className='past'; det.innerHTML=`<summary>ימים שעברו (${past.length})</summary>`; past.forEach(d=>det.appendChild(dayEl(d))); box.appendChild(det); }
   let wk=0;
   rest.forEach(day=>{
     const w=weekNo(day.d);
     if(w!==wk){ wk=w; const days=rest.filter(x=>weekNo(x.d)===w); const L=days.reduce((a,x)=>a+dayLoad(x),0); const P=days.reduce((a,x)=>a+dayPts(x),0);
       const h=document.createElement('div'); h.className='week'; h.innerHTML=`<div>שבוע ${w}</div><span>${P} נק׳ תרגול · ≈ ${Math.round(L/60)} שעות</span>`; box.appendChild(h); }
-    box.appendChild(dayEl(day,today));
+    box.appendChild(dayEl(day));
   });
+}
+// ---- תצוגת "היום" ----
+let VIEW = null;
+function pickViewDay(){ const t=todayIL(); const d=DAYS.find(x=>x.d>=t); return (d||DAYS[DAYS.length-1]).d; }
+function buildToday(){
+  if(!VIEW) VIEW=pickViewDay();
+  const i=DAYS.findIndex(x=>x.d===VIEW); const day=DAYS[i];
+  $('#dayLbl').textContent = VIEW===todayIL() ? 'היום' : (VIEW>todayIL()?'יום עתידי':'יום שעבר');
+  $('#prevDay').disabled = i<=0; $('#nextDay').disabled = i>=DAYS.length-1;
+  const v=$('#dayView'); v.innerHTML=''; v.appendChild(dayEl(day,{big:true}));
+  const ns=SIMS.find(s=>s.date>=todayIL());
+  $('#nextSim').innerHTML = ns ? `<div class="banner">הסימולציה הבאה: ${fmt(ns.date)} · ${ns.name}${ns.date===todayIL()?' · היום! 11:00':` · בעוד ${Math.round((Date.parse(ns.date)-Date.parse(todayIL()))/864e5)} ימים`}</div>` : '';
+  const nx=DAYS[i+1];
+  $('#tomorrow').innerHTML = nx ? `<div class="next"><h4>מחר · ${fmt(nx.d)}${nx.title?` · ${nx.title}`:''}</h4><ul>${nx.tasks.map(t=>`<li>${t.t}${t.q?` <span class="muted">· ${t.q}</span>`:''}</li>`).join('')}</ul></div>` : '';
+  applyState();
+}
+$('#prevDay').onclick=()=>{ const i=DAYS.findIndex(x=>x.d===VIEW); if(i>0){ VIEW=DAYS[i-1].d; buildToday(); } };
+$('#nextDay').onclick=()=>{ const i=DAYS.findIndex(x=>x.d===VIEW); if(i<DAYS.length-1){ VIEW=DAYS[i+1].d; buildToday(); } };
+$('#toToday').onclick=()=>{ VIEW=pickViewDay(); buildToday(); };
+
+function buildSims(){
   const sb=$('#simrows'); sb.innerHTML='';
   SIMS.forEach(s=>{
-    const inp=(who,part)=>`<input class="sc" inputmode="decimal" data-sim="${s.id}" data-who="${who}" data-part="${part}" placeholder="${part==='a'?'א׳':'ב׳'}">`;
+    const cell=who=> (who===ME)
+      ? `<input class="sc" inputmode="decimal" data-sim="${s.id}" data-who="${who}" data-part="a" placeholder="א׳"> <input class="sc" inputmode="decimal" data-sim="${s.id}" data-who="${who}" data-part="b" placeholder="ב׳"> <b class="tot" data-sim="${s.id}" data-who="${who}"></b>`
+      : `<span class="ro" data-sim="${s.id}" data-who="${who}"></span>`;
     const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${fmt(s.date)}</td><td>${s.name}</td><td>${inp('omer','a')} ${inp('omer','b')} <b class="tot" data-sim="${s.id}" data-who="omer"></b></td><td>${inp('shaham','a')} ${inp('shaham','b')} <b class="tot" data-sim="${s.id}" data-who="shaham"></b></td>`;
+    tr.innerHTML=`<td>${fmt(s.date)}</td><td>${s.name}</td><td>${cell('omer')}</td><td>${cell('shaham')}</td>`;
     sb.appendChild(tr);
   });
 }
+// ---- מצב משותף ----
+const nkey=(d,w)=>`${d}|${w}`;
 function applyState(){
-  let tot=0, done={omer:0,shaham:0};
-  document.querySelectorAll('.task').forEach(row=>{
-    const c=S.checks[row.dataset.id]||{}; tot++;
-    row.querySelectorAll('input').forEach(cb=>{ cb.checked=!!c[cb.dataset.who]; if(cb.checked) done[cb.dataset.who]++; });
-    row.classList.toggle('done-both', !!(c.omer && c.shaham));
-  });
+  const counted=new Set(); let tot=0, done={omer:0,shaham:0};
+  DAYS.forEach(d=>d.tasks.forEach(t=>{ tot++; const c=S.checks[t.id]||{}; if(c.omer) done.omer++; if(c.shaham) done.shaham++; }));
   for(const w of ['omer','shaham']){ $('#p-'+w).textContent=`${done[w]}/${tot}`; $('#b-'+w).style.width=(tot?done[w]/tot*100:0)+'%'; }
-  document.querySelectorAll('textarea.note').forEach(ta=>{ if(document.activeElement!==ta) ta.value=S.notes[ta.dataset.date]||''; });
+  document.querySelectorAll('.task').forEach(row=>{
+    const c=S.checks[row.dataset.id]||{};
+    const cb=row.querySelector('input[type=checkbox]'); if(cb) cb.checked=!!c[ME];
+    row.classList.toggle('mine-done', !!(ME && c[ME]));
+    row.querySelectorAll('.other').forEach(o=>{ const k=o.dataset.who; const ok=!!c[k]; o.classList.toggle('done',ok); o.textContent=`${PEOPLE[k].name}: ${ok?'✓ בוצע':'עוד לא'}`; });
+  });
+  document.querySelectorAll('textarea.note').forEach(ta=>{ if(document.activeElement!==ta) ta.value=S.notes[nkey(ta.dataset.date,ME)]||''; });
+  document.querySelectorAll('.pnote').forEach(p=>{ const v=S.notes[nkey(p.dataset.date,p.dataset.who)]||''; p.hidden=!v; p.innerHTML=v?`<b>${PEOPLE[p.dataset.who].name}:</b> ${esc(v)}`:''; });
   document.querySelectorAll('input.sc').forEach(i=>{ if(document.activeElement!==i){ const v=((S.scores[i.dataset.sim]||{})[i.dataset.who]||{})[i.dataset.part]; i.value=v??''; }});
-  document.querySelectorAll('b.tot').forEach(b=>{ const o=(S.scores[b.dataset.sim]||{})[b.dataset.who]||{}; const a=parseFloat(o.a), c=parseFloat(o.b); b.textContent=(isNaN(a)&&isNaN(c))?'':' = '+((a||0)+(c||0)); });
+  const total=(sim,who)=>{ const o=(S.scores[sim]||{})[who]||{}; const a=parseFloat(o.a), c=parseFloat(o.b); return (isNaN(a)&&isNaN(c))?null:{a:o.a||'–',b:o.b||'–',t:(a||0)+(c||0)}; };
+  document.querySelectorAll('b.tot').forEach(b=>{ const r=total(b.dataset.sim,b.dataset.who); b.textContent=r?` = ${r.t}`:''; });
+  document.querySelectorAll('span.ro').forEach(s=>{ const r=total(s.dataset.sim,s.dataset.who); s.textContent=r?`${r.a} / ${r.b} = ${r.t}`:'—'; });
 }
 function setSync(t){ $('#sync').textContent=t+(S.updated?` · עודכן ${new Date(S.updated).toLocaleString('he-IL',{timeZone:'Asia/Jerusalem',dateStyle:'short',timeStyle:'short'})}`:''); }
 async function load(){
@@ -400,15 +511,16 @@ function send(op){
     catch{ setSync('אין חיבור, לא נשמר'); } }, 500);
 }
 document.addEventListener('change',e=>{
-  const t=e.target;
-  if(t.matches('.task input[type=checkbox]')){ (S.checks[t.dataset.id]=S.checks[t.dataset.id]||{})[t.dataset.who]=t.checked; applyState(); send({kind:'check',id:t.dataset.id,who:t.dataset.who,value:t.checked}); }
-  if(t.matches('input.sc')){ const sc=S.scores[t.dataset.sim]=S.scores[t.dataset.sim]||{}; (sc[t.dataset.who]=sc[t.dataset.who]||{})[t.dataset.part]=t.value; applyState(); send({kind:'score',sim:t.dataset.sim,who:t.dataset.who,part:t.dataset.part,value:t.value}); }
+  const t=e.target; if(!ME) return;
+  if(t.matches('.task input[type=checkbox]')){ (S.checks[t.dataset.id]=S.checks[t.dataset.id]||{})[ME]=t.checked; applyState(); send({kind:'check',id:t.dataset.id,who:ME,value:t.checked}); }
+  if(t.matches('input.sc') && t.dataset.who===ME){ const sc=S.scores[t.dataset.sim]=S.scores[t.dataset.sim]||{}; (sc[ME]=sc[ME]||{})[t.dataset.part]=t.value; applyState(); send({kind:'score',sim:t.dataset.sim,who:ME,part:t.dataset.part,value:t.value}); }
 });
 let noteTimers={};
 document.addEventListener('input',e=>{
-  const t=e.target; if(!t.matches('textarea.note')) return;
-  S.notes[t.dataset.date]=t.value; clearTimeout(noteTimers[t.dataset.date]);
-  noteTimers[t.dataset.date]=setTimeout(()=>send({kind:'note',date:t.dataset.date,text:t.value}),900);
+  const t=e.target; if(!ME || !t.matches('textarea.note')) return;
+  const k=nkey(t.dataset.date,ME); S.notes[k]=t.value;
+  document.querySelectorAll(`textarea.note[data-date="${t.dataset.date}"]`).forEach(x=>{ if(x!==t) x.value=t.value; });
+  clearTimeout(noteTimers[k]); noteTimers[k]=setTimeout(()=>send({kind:'note',date:k,text:t.value}),900);
 });
 $('#tabs').addEventListener('click',e=>{
   const b=e.target.closest('button'); if(!b) return;
@@ -419,11 +531,13 @@ function tick(){
   const ms=EXAM-Date.now(); const box=$('#count');
   if(ms<=0){ box.innerHTML='<div class="box"><div class="n">בהצלחה!</div></div>'; return; }
   const d=Math.floor(ms/864e5), h=Math.floor(ms%864e5/36e5);
-  const sims=SIMS.filter(s=>Date.parse(s.date+'T23:59:00+02:00')>Date.now()).length;
+  const sims=SIMS.filter(s=>s.date>=todayIL()).length;
   const left=DAYS.filter(x=>x.d>=todayIL()).reduce((a,x)=>a+dayPts(x),0);
   box.innerHTML=`<div class="box"><div class="n">${d}</div><div class="l">ימים</div></div><div class="box"><div class="n">${h}</div><div class="l">שעות</div></div><div class="box"><div class="n">${sims}</div><div class="l">סימולציות</div></div><div class="box"><div class="n">${left}</div><div class="l">נק׳ תרגול שנשארו</div></div>`;
 }
-build(); tick(); setInterval(tick,60000); load(); setInterval(load,20000);
+function renderAll(){ renderMe(); buildPlan(); buildToday(); buildSims(); applyState(); }
+if(!ME) $('#chooser').classList.add('on');
+renderAll(); tick(); setInterval(tick,60000); load(); setInterval(load,20000);
 window.addEventListener('focus',load);
 </script>
 </body>

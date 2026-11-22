@@ -1,5 +1,9 @@
 {
   "regions": ["fra1"],
+  "rewrites": [
+    { "source": "/arosh", "destination": "/index.html" },
+    { "source": "/shaham", "destination": "/index.html" }
+  ],
   "headers": [
     { "source": "/(.*)", "headers": [ { "key": "X-Robots-Tag", "value": "noindex, nofollow" } ] }
   ]
