@@ -178,7 +178,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
   </section>
 
   <section class="panel" id="sims">
-    <p class="muted">כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ 11:00–14:00, הפסקה של שעה, חלק ב׳ 15:00–18:00 (3 שעות לחלק, כולל תוספת הזמן). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.</p>
+    <p class="muted" id="simTimes"></p>
     <table>
       <thead><tr><th>תאריך</th><th>בחינה</th><th>הרוש: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
       <tbody id="simrows"></tbody>
@@ -188,7 +188,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
   <section class="panel" id="facts">
     <div class="card"><h3>מבנה</h3><ul>
       <li>4 שעות בשני חלקים עם הפסקה: חלק א׳ (שאלות 1–3) שעתיים, 50%; חלק ב׳ (שאלות 4–7) שעתיים, 50%.</li>
-      <li>עם שעה תוספת לכל חלק: 3 שעות לחלק, כלומר <b>3.6 דקות לנקודה</b>. שאלה של 15% היא 54 דקות. אין הארכות ביום הבחינה.</li>
+      <li id="paceFact"></li>
       <li>7 עד 8 שאלות פתוחות, אין רב־ברירה. שאלה אחת לא עולה על 20 נקודות.</li>
     </ul></div>
     <div class="card"><h3>על המחשב</h3><ul>
@@ -210,8 +210,8 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
       <li>החומר: התקינה העדכנית, חוץ מתקנים שעוד לא עברה חצי שנה מכניסתם לתוקף. IFRS 18 נכנס רק ב־2027.</li>
     </ul></div>
     <div class="card"><h3>איך חושב העומס היומי</h3><ul>
-      <li>פתרון: 3.6 דקות לנקודה, קצב הבחינה עם תוספת הזמן.</li>
-      <li>עם תחקור, טעויות ומעבר על הפתרון: בערך 6.5 דקות לנקודה. בפיננסית ב׳ פתרת בממוצע כ־4.5 דקות לנקודה, והתחקורים לקחו עוד כמחצית מזה.</li>
+      <li id="paceSolve"></li>
+      <li>עם תחקור, טעויות ומעבר על הפתרון: בערך <span id="paceLoad"></span> דקות לנקודה. בפיננסית ב׳ פתרת בממוצע כ־4.5 דקות לנקודה, והתחקורים לקחו עוד כמחצית מזה.</li>
       <li>היעד: יום תרגול של 5.5 עד 6.5 שעות עבודה נטו, כ־50 עד 60 נקודות. יום אחרי סימולציה: תחקיר ועוד כ־25 נקודות. יום לפני סימולציה: קל יותר.</li>
     </ul></div>
     <div class="card"><h3>בזמן הבחינה</h3><ul>
@@ -247,8 +247,16 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
 
 <script>
 const EXAM = Date.parse('2026-12-21T11:00:00+02:00');
-const PACE = 3.6;   // דקות לנקודה בבחינה, כולל תוספת הזמן
-const LOAD = 6.5;   // דקות לנקודה ביום תרגול: פתרון + תחקור
+// הזמן לכל חלק נבחר אישית ונשמר רק בדפדפן. הריפו ציבורי: לא לכתוב כאן את הזמן של אף אחד.
+const PARTS = [120, 150, 180];   // דקות לחלק
+const PART_PTS = 50;             // כל חלק שווה 50 נקודות
+const DEBRIEF = 2.9;             // דקות תחקור לנקודה ביום תרגול
+let PART = 180;
+const pace = () => PART / PART_PTS;          // דקות לנקודה בבחינה
+const loadRate = () => pace() + DEBRIEF;     // דקות לנקודה ביום תרגול: פתרון + תחקור
+const clock = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+const partRange = p => { const s = p==='a' ? 660 : 660+PART+60; return `${clock(s)}–${clock(s+PART)}`; };
+const taskQ = t => t.part ? partRange(t.part) : t.q;
 // המפתחות הפנימיים (omer / shaham) נשמרים בשרת — לא לשנות. השם לתצוגה והקישור האישי כאן.
 const PEOPLE = { omer:{name:'הרוש', slug:'harosh', alias:['arosh']}, shaham:{name:'שחם', slug:'shaham'} };
 const SIMS = [
@@ -262,11 +270,12 @@ const SIMS = [
 // לכל משימה id קבוע — הסימונים נשמרים לפיו. pts = ניקוד שאלה (הזמן מחושב), m = דקות למשימה שאינה שאלה.
 const Q = (id, t, q, pts) => ({id, t, q, pts});
 const M = (id, t, m, q) => ({id, t, m, q});
+const PT = (id, t, part) => ({id, t, part});   // חלק של סימולציה: הזמן לפי הבחירה האישית
 const DAYS = [
  {d:'2026-11-22', type:'study', title:'פתיחה · ערב אחרי השיעור', tasks:[
    M('1122a','השיעור ב־16:00: לרשום כל מידע על הבחינה',0),
    M('1122b','לוודא רישום לבחינה (אחרון 30.11) ומחשב של המועצה',15),
-   M('1122c','לוודא בכתב שאושרה תוספת שעה לכל חלק',15,'באזור האישי או במכתב האישור')]},
+   M('1122c','לוודא בכתב את הזמן שאושר לכל חלק',15,'באזור האישי או במכתב האישור')]},
  {d:'2026-11-23', type:'study', tasks:[
    Q('1123a','צירופי עסקים','סתיו 2023 (מתכונת ישנה) ש4',22),
    Q('1123b','הכרה בהכנסה · IFRS 15','אביב 2024 ש7',12),
@@ -305,8 +314,8 @@ const DAYS = [
    Q('1130b','הפרשות ותלויות','מועד מיוחד 19.5.2024 ש4',16),
    M('1130c','הכנה לסימולציה',30,'מחשב, אקסל, מחשבון, ספר תקנים, שעון מעורר')]},
  {d:'2026-12-01', type:'sim', title:'סתיו 2023 (מתכונת חדשה)', tasks:[
-   M('1201a','סימולציה 1: חלק א׳',180,'11:00–14:00'),
-   M('1201b','סימולציה 1: חלק ב׳',180,'15:00–18:00')]},
+   PT('1201a','סימולציה 1: חלק א׳','a'),
+   PT('1201b','סימולציה 1: חלק ב׳','b')]},
  {d:'2026-12-02', type:'study', tasks:[
    M('1202a','תחקיר סימולציה 1',150),
    Q('1202b','מכשירים פיננסיים','אביב 2021 ש5',11),
@@ -320,8 +329,8 @@ const DAYS = [
    Q('1204a','דוח מאוחד על השינויים בהון','סתיו 2021 ש2',32),
    M('1204b','ספר החוקים: הנושאים של השבוע',45)]},
  {d:'2026-12-05', type:'sim', title:'מועד מיוחד 30.5.2024', tasks:[
-   M('1205a','סימולציה 2: חלק א׳',180,'11:00–14:00'),
-   M('1205b','סימולציה 2: חלק ב׳',180,'15:00–18:00')]},
+   PT('1205a','סימולציה 2: חלק א׳','a'),
+   PT('1205b','סימולציה 2: חלק ב׳','b')]},
  {d:'2026-12-06', type:'study', tasks:[
    M('1206a','תחקיר סימולציה 2',150),
    Q('1206b','מוחזק למכירה וירידת ערך','אביב 2022 ש4',19),
@@ -335,13 +344,13 @@ const DAYS = [
    Q('1215b','מכשירים פיננסיים: אלפא','סתיו 2024 ש2',18),
    M('1208b','מלכ״רים · רמה 3 · קריאת הפתרון בלבד',30,'סתיו 2023 (מתכונת ישנה) ש6')]},
  {d:'2026-12-09', type:'sim', title:'אביב 2025', tasks:[
-   M('1209a','סימולציה 3: חלק א׳',180,'11:00–14:00'),
-   M('1209b','סימולציה 3: חלק ב׳',180,'15:00–18:00')]},
+   PT('1209a','סימולציה 3: חלק א׳','a'),
+   PT('1209b','סימולציה 3: חלק ב׳','b')]},
  {d:'2026-12-10', type:'study', tasks:[
    M('1210a','תחקיר סימולציה 3',150),
    Q('1210b','מגזרי פעילות','מועד מיוחד 19.5.2024 ש2',28)]},
  {d:'2026-12-11', type:'study', title:'חצי סימולציה בבוקר', tasks:[
-   M('1211a','הבחינה לדוגמה של המועצה: שאלות 1–3, בזמן',150,'תמ״מ וזשמ״ש · הערכות שווי · צירופי עסקים'),
+   {id:'1211a', t:'הבחינה לדוגמה של המועצה: שאלות 1–3, בזמן', pp:42, q:'תמ״מ וזשמ״ש · הערכות שווי · צירופי עסקים'},
    M('1211b','תחקיר',60),
    Q('1211c','תזרים בצירוף עסקים: סטארק','סתיו 2024 ש3',14)]},
  {d:'2026-12-12', type:'study', title:'יום לפני סימולציה', tasks:[
@@ -349,8 +358,8 @@ const DAYS = [
    Q('1212b','מטבע חוץ בלי פעילות חוץ: יורו־ליג','מועד מיוחד 19.5.2024 ש5',18),
    M('1212c','חכירות · IFRS 16 · רב־ברירה',105,'אביב 2020 ש1.2 · אביב 2021 ש1.1 · סתיו 2023 (מתכונת ישנה) ש1.2')]},
  {d:'2026-12-13', type:'sim', title:'סתיו 2025', tasks:[
-   M('1213a','סימולציה 4: חלק א׳',180,'11:00–14:00'),
-   M('1213b','סימולציה 4: חלק ב׳',180,'15:00–18:00')]},
+   PT('1213a','סימולציה 4: חלק א׳','a'),
+   PT('1213b','סימולציה 4: חלק ב׳','b')]},
  {d:'2026-12-14', type:'study', tasks:[
    M('1214a','תחקיר סימולציה 4',150),
    Q('1214b','הבחינה לדוגמה: מסים ותמ״מ, מכשירים, מאוחדים','שאלות 5–7',36)]},
@@ -361,8 +370,8 @@ const DAYS = [
    M('1216b','רמה 3: מסגרת מושגית, מלכ״רים, ביניים, מענקים',60),
    M('1216c','הכנה לחזרה הגנרלית',30)]},
  {d:'2026-12-17', type:'sim', title:'אביב 2026 · חזרה גנרלית', tasks:[
-   M('1217a','סימולציה 5: חלק א׳',180,'11:00–14:00'),
-   M('1217b','סימולציה 5: חלק ב׳',180,'15:00–18:00')]},
+   PT('1217a','סימולציה 5: חלק א׳','a'),
+   PT('1217b','סימולציה 5: חלק ב׳','b')]},
  {d:'2026-12-18', type:'study', tasks:[
    M('1218a','תחקיר סימולציה 5',150),
    M('1218b','חולשות אחרונות',120)]},
@@ -383,7 +392,7 @@ const esc = s => String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>'
 const todayIL = () => new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Jerusalem',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 function fmt(d){ const [y,m,dd]=d.split('-'); const w=new Date(Date.UTC(+y,+m-1,+dd)).getUTCDay(); return `${DOW[w]} ${+dd}.${+m}`; }
 function weekNo(d){ const [y,m,dd]=d.split('-'); return Math.floor((Date.UTC(+y,+m-1,+dd)-Date.UTC(2026,10,22))/(7*864e5))+1; }
-const tmin = t => t.pts ? Math.round(t.pts*LOAD/5)*5 : (+t.m||0);
+const tmin = t => t.part ? PART : t.pp ? Math.round(t.pp*pace()/5)*5 : t.pts ? Math.round(t.pts*loadRate()/5)*5 : (+t.m||0);
 const hm = m => `${Math.floor(m/60)}:${String(m%60).padStart(2,'0')}`;
 const dayLoad = day => day.tasks.reduce((a,t)=>a+tmin(t),0);
 const dayPts = day => day.tasks.reduce((a,t)=>a+(t.pts||0),0);
@@ -398,8 +407,27 @@ function detectMe(){
 }
 let ME = detectMe();
 const OTHER = () => ME==='omer' ? 'shaham' : 'omer';
+function savePart(v){ try{ if(ME) localStorage.setItem('luz-part-'+ME, String(v)); }catch{} }
+function readPart(){
+  const params=new URLSearchParams(location.search), fromLink=+params.get('t');
+  if(ME && PARTS.includes(fromLink)){
+    savePart(fromLink); params.delete('t');
+    const rest=params.toString(); history.replaceState(null,'',location.pathname+(rest?'?'+rest:''));
+    return fromLink;
+  }
+  try{ const s=+localStorage.getItem('luz-part-'+ME); if(PARTS.includes(s)) return s; }catch{}
+  return 180;
+}
+PART = readPart();
+function renderTimes(){
+  $('#simTimes').textContent=`כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ ${partRange('a')}, הפסקה של שעה, חלק ב׳ ${partRange('b')} (${hm(PART)} שעות לחלק, לפי הזמן שבחרת). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.`;
+  $('#paceFact').innerHTML=`הזמן שלך לכל חלק: ${hm(PART)} שעות, כלומר <b>${pace().toFixed(1)} דקות לנקודה</b>. שאלה של 15% היא ${Math.round(15*pace())} דקות. אין הארכות ביום הבחינה.`;
+  $('#paceSolve').textContent=`פתרון: ${pace().toFixed(1)} דקות לנקודה, קצב הבחינה לפי הזמן שלך.`;
+  $('#paceLoad').textContent=loadRate().toFixed(1);
+}
 function setMe(k){
   ME=k; try{ localStorage.setItem('luz-me',k); }catch{}
+  PART=readPart();
   history.replaceState(null,'','/'+PEOPLE[k].slug);
   $('#chooser').classList.remove('on'); renderAll();
 }
@@ -407,7 +435,8 @@ function renderMe(){
   const box=$('#me');
   if(!ME){ box.innerHTML='<b>לא נבחר משתמש</b><br><button id="pick">בחירה</button>'; }
   else{ const url=`${location.host}/${PEOPLE[ME].slug}`;
-    box.innerHTML=`נכנסת בתור <b>${PEOPLE[ME].name}</b><br><span style="opacity:.8">${url}</span> · <button id="pick">החלפה</button>`; }
+    box.innerHTML=`נכנסת בתור <b>${PEOPLE[ME].name}</b><br><span style="opacity:.8">${url}</span> · <button id="pick">החלפה</button><br><label>הזמן שלי לכל חלק: <select id="partSel" aria-label="הזמן שלי לכל חלק">${PARTS.map(p=>`<option value="${p}"${p===PART?' selected':''}>${hm(p)}</option>`).join('')}</select></label>`;
+    $('#partSel').onchange=e=>{ PART=+e.target.value; savePart(PART); renderAll(); }; }
   $('#pick').onclick=()=>$('#chooser').classList.add('on');
   ['omer','shaham'].forEach(k=>$('#pp-'+k).classList.toggle('self',k===ME));
 }
@@ -416,12 +445,12 @@ document.querySelectorAll('#chooser [data-me]').forEach(b=>b.onclick=()=>setMe(b
 // ---- בניית משימה ויום ----
 function taskHTML(task){
   let meta='';
-  if(task.pts) meta=`${task.pts} נק׳ · פתרון ${Math.round(task.pts*PACE)} דק׳ · עם תחקור ${hm(tmin(task))}`;
-  else if(+task.m) meta=hm(+task.m);
+  if(task.pts) meta=`${task.pts} נק׳ · פתרון ${Math.round(task.pts*pace())} דק׳ · עם תחקור ${hm(tmin(task))}`;
+  else if(tmin(task)) meta=hm(tmin(task));
   const other = ME ? OTHER() : null;
   const mine = ME ? `<label class="mybtn ${ME}"><input type="checkbox" data-id="${task.id}" aria-label="סיימתי: ${esc(task.t)}"><span>✓ סיימתי</span></label>` : '';
   const others = (ME ? [other] : ['omer','shaham']).map(k=>`<span class="other ${k}" data-id="${task.id}" data-who="${k}"></span>`).join('');
-  return `<div class="t">${task.t}${task.q?`<span class="q">${task.q}</span>`:''}${meta?`<span class="meta">${meta}</span>`:''}</div>
+  return `<div class="t">${task.t}${taskQ(task)?`<span class="q">${taskQ(task)}</span>`:''}${meta?`<span class="meta">${meta}</span>`:''}</div>
     <div class="status">${mine}${others}</div>`;
 }
 function dayEl(day, opts={}){
@@ -461,7 +490,7 @@ function buildToday(){
   const ns=SIMS.find(s=>s.date>=todayIL());
   $('#nextSim').innerHTML = ns ? `<div class="banner">הסימולציה הבאה: ${fmt(ns.date)} · ${ns.name}${ns.date===todayIL()?' · היום! 11:00':` · בעוד ${Math.round((Date.parse(ns.date)-Date.parse(todayIL()))/864e5)} ימים`}</div>` : '';
   const nx=DAYS[i+1];
-  $('#tomorrow').innerHTML = nx ? `<div class="next"><h4>מחר · ${fmt(nx.d)}${nx.title?` · ${nx.title}`:''}</h4><ul>${nx.tasks.map(t=>`<li>${t.t}${t.q?` <span class="muted">· ${t.q}</span>`:''}</li>`).join('')}</ul></div>` : '';
+  $('#tomorrow').innerHTML = nx ? `<div class="next"><h4>מחר · ${fmt(nx.d)}${nx.title?` · ${nx.title}`:''}</h4><ul>${nx.tasks.map(t=>`<li>${t.t}${taskQ(t)?` <span class="muted">· ${taskQ(t)}</span>`:''}</li>`).join('')}</ul></div>` : '';
   applyState();
 }
 $('#prevDay').onclick=()=>{ const i=DAYS.findIndex(x=>x.d===VIEW); if(i>0){ VIEW=DAYS[i-1].d; buildToday(); } };
@@ -536,7 +565,7 @@ function tick(){
   const left=DAYS.filter(x=>x.d>=todayIL()).reduce((a,x)=>a+dayPts(x),0);
   box.innerHTML=`<div class="box"><div class="n">${d}</div><div class="l">ימים</div></div><div class="box"><div class="n">${h}</div><div class="l">שעות</div></div><div class="box"><div class="n">${sims}</div><div class="l">סימולציות</div></div><div class="box"><div class="n">${left}</div><div class="l">נק׳ תרגול שנשארו</div></div>`;
 }
-function renderAll(){ renderMe(); buildPlan(); buildToday(); buildSims(); applyState(); }
+function renderAll(){ renderMe(); renderTimes(); buildPlan(); buildToday(); buildSims(); applyState(); }
 if(!ME) $('#chooser').classList.add('on');
 renderAll(); tick(); setInterval(tick,60000); load(); setInterval(load,20000);
 window.addEventListener('focus',load);
