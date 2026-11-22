@@ -130,7 +130,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
 <div id="chooser"><div class="box">
   <h2>מי נכנס?</h2>
   <div class="muted">הסימונים וההערות יירשמו בשמך. בפעם הבאה אפשר להיכנס ישר מהקישור האישי.</div>
-  <div class="opts"><button data-me="omer" style="background:var(--omer)">ארוש</button><button data-me="shaham" style="background:var(--shaham)">שחם</button></div>
+  <div class="opts"><button data-me="omer" style="background:var(--omer)">הרוש</button><button data-me="shaham" style="background:var(--shaham)">שחם</button></div>
 </div></div>
 <div class="wrap">
   <header class="hero">
@@ -143,7 +143,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
     </div>
     <div class="count" id="count"></div>
     <div class="people">
-      <div class="person" id="pp-omer"><div class="row"><b>ארוש</b><span id="p-omer">0/0</span></div><div class="bar"><i id="b-omer"></i></div></div>
+      <div class="person" id="pp-omer"><div class="row"><b>הרוש</b><span id="p-omer">0/0</span></div><div class="bar"><i id="b-omer"></i></div></div>
       <div class="person" id="pp-shaham"><div class="row"><b>שחם</b><span id="p-shaham">0/0</span></div><div class="bar"><i id="b-shaham"></i></div></div>
     </div>
     <div class="sync" id="sync">טוען…</div>
@@ -180,7 +180,7 @@ td input.sc{width:56px;font:inherit;border:1px solid var(--line);border-radius:8
   <section class="panel" id="sims">
     <p class="muted">כל סימולציה מתחילה ב־11:00, כמו בבחינה: חלק א׳ 11:00–14:00, הפסקה של שעה, חלק ב׳ 15:00–18:00 (3 שעות לחלק, כולל תוספת הזמן). כל חלק שווה 50 נקודות. למחרת בבוקר תחקיר. כל אחד רושם רק את הציון שלו.</p>
     <table>
-      <thead><tr><th>תאריך</th><th>בחינה</th><th>ארוש: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
+      <thead><tr><th>תאריך</th><th>בחינה</th><th>הרוש: א׳ / ב׳</th><th>שחם: א׳ / ב׳</th></tr></thead>
       <tbody id="simrows"></tbody>
     </table>
   </section>
@@ -250,7 +250,7 @@ const EXAM = Date.parse('2026-12-21T11:00:00+02:00');
 const PACE = 3.6;   // דקות לנקודה בבחינה, כולל תוספת הזמן
 const LOAD = 6.5;   // דקות לנקודה ביום תרגול: פתרון + תחקור
 // המפתחות הפנימיים (omer / shaham) נשמרים בשרת — לא לשנות. השם לתצוגה והקישור האישי כאן.
-const PEOPLE = { omer:{name:'ארוש', slug:'arosh'}, shaham:{name:'שחם', slug:'shaham'} };
+const PEOPLE = { omer:{name:'הרוש', slug:'harosh', alias:['arosh']}, shaham:{name:'שחם', slug:'shaham'} };
 const SIMS = [
   {id:'sim1', date:'2026-12-01', name:'סתיו 2023 (מתכונת חדשה)'},
   {id:'sim2', date:'2026-12-05', name:'מועד מיוחד 30.5.2024'},
@@ -390,7 +390,7 @@ const dayPts = day => day.tasks.reduce((a,t)=>a+(t.pts||0),0);
 // ---- מי אני ----
 function detectMe(){
   const seg=location.pathname.replace(/\/+$/,'').split('/').pop().toLowerCase();
-  for(const [k,v] of Object.entries(PEOPLE)) if(v.slug===seg) return k;
+  for(const [k,v] of Object.entries(PEOPLE)) if(v.slug===seg || (v.alias||[]).includes(seg)) return k;
   const q=new URLSearchParams(location.search).get('me'); if(q && PEOPLE[q]) return q;
   try{ const s=localStorage.getItem('luz-me'); if(PEOPLE[s]) return s; }catch{}
   return null;
